@@ -1,0 +1,894 @@
+  <aside class="main-sidebar sidebar-light-secondary elevation-4">
+    <div class="dropdown">
+   	<a href="./" class="brand-link">
+        <?php if($_SESSION['login_type'] == 1): ?>
+   
+      <p style="text-align: center;" class="logo-border1">
+        <img src="assets/uploads/logo.png" alt="Avatar" class="brand_logo1" style="border-radius: 50%;">
+      </p>
+        <?php else: ?>
+       <!-- <h3 class="text-center p-0 m-0"><b>USER</b></h3>-->
+       <p style="text-align: center;" class="logo-border1">
+         <img src="assets/uploads/logo.png" alt="Avatar" class="brand_logo1" style="border-radius: 50%; text-align: center;">
+       </p>
+        <?php endif; ?>
+
+    </a>
+      
+    
+    <br><br><br><br>
+    <div class="sidebar pb-4 mb-4">
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column nav-flat" data-widget="treeview" role="menu" data-accordion="false">
+          <li class="nav-item dropdown">
+            <a href="./" class="nav-link nav-home">
+              <i class="nav-icon fas fa-home" style="color:#CD853F;"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="?page=patient_lookup" class="nav-link">
+              <i class="fas fa-users nav-icon" style="color:#CD853F;"></i>
+              <p>
+               People
+              </p>
+            </a>
+        </li>
+
+
+
+
+ <?php if($_SESSION['login_type'] == 4): ?>
+           <li class="nav-item">
+            <a href="#" class="nav-link nav-edit_project nav-view_project">
+              <i class="fas fa-user-md nav-icon" style="color:#CD853F;"></i>
+              <p>
+              Physical Screening
+                <i class="right fas fa-angle-left" style="color:#CD853F;"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" id="mouseover1">
+           
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=physical_characteristics" class="nav-link nav-physical_characteristics tree-item" data-toggle="toggle" data-placement="top" title="PHYSICAL CHARACTERISTICS">
+                  <i class="fas fa-user-md nav-icon" style="color:#CD853F; font-size:11px;"></i>
+                  <p style="color: black; font-size:11px;">Physical-Characteristics</p>
+                </a>
+              </li>
+          
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=medical_screening" class="nav-link nav-medical_screening tree-item" data-toggle="toggle" data-placement="top" title="MEDICAL SCREENING SERVICES">
+                  <i class="fas fa-microscope nav-icon" style="color:#CD853F; font-size:11px;"></i>
+                  <p style="color: black; font-size:11px;">Medical-Screening</p>
+                </a>
+              </li>
+
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=medical_history" class="nav-link nav-medical_history tree-item" data-toggle="toggle" data-placement="top" title="MEDICAL HISTORY">
+                  <!-- <i class="fas fa-weight nav-icon" style="color:#CD853F; font-size:11px;"></i> -->
+                  <i class="fas fa-file-archive nav-icon" style="color:#CD853F; font-size:11px;"></i>
+                  <p style="color: black; font-size:11px;">Medical History</p>
+                </a>
+              </li>
+
+            
+
+            </ul>
+          </li>
+ <?php endif; ?>
+
+
+
+
+
+ <?php if($_SESSION['login_type'] == 4): ?>
+           <li class="nav-item">
+            <a href="#" class="nav-link nav-edit_project nav-view_project">
+              <i class="fas fa-user nav-icon" style="color:#CD853F;"></i>
+              <p>
+              Prison Health Card
+                <i class="right fas fa-angle-left" style="color:#CD853F;"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" id="mouseover1">
+                
+         <li class="nav-item dropdown">
+            <a href="./index.php?page=all_pages" class="nav-link nav-ART_history_at_entry tree-item"  data-toggle="toggle" data-placement="top" title="ART HISTORY AT ENTRY">
+              <i class="nav-icon fas fa-sign-out-alt" style="color:#CD853F; font-size:10px;"></i>
+              <p style="color: black; font-size:11px;">
+                All pages holder
+              </p>
+            </a>
+          </li>  
+           
+            <li class="nav-item dropdown">
+            <a href="./index.php?page=patient_lookup" class="nav-link nav-ART_history_at_entry tree-item"  data-toggle="toggle" data-placement="top" title="ART HISTORY AT ENTRY">
+              <i class="nav-icon fas fa-sign-out-alt" style="color:#CD853F; font-size:10px;"></i>
+              <p style="color: black; font-size:11px;">
+                Search Patient 
+              </p>
+            </a>
+          </li> 
+               <li class="nav-item dropdown">
+            <a href="./index.php?page=ART_history_at_entry" class="nav-link nav-ART_history_at_entry tree-item"  data-toggle="toggle" data-placement="top" title="ART HISTORY AT ENTRY">
+              <i class="nav-icon fas fa-sign-out-alt" style="color:#CD853F; font-size:10px;"></i>
+              <p style="color: black; font-size:11px;">
+                ART History at Entry
+              </p>
+            </a>
+          </li>  
+
+                        <li class="nav-item" id="side">
+                <a href="./index.php?page=vitals" class="nav-link nav-vitals tree-item" data-toggle="toggle" data-placement="top" title="TEMPERATURE, WEIGHT REGISTERS, AND BLOOD PRESSURE">
+                  <i class="fas fa-weight nav-icon" style="color:#CD853F; font-size:11px;"></i>
+                  <p style="color: black; font-size:11px;">Vitals</p>
+                </a>
+              </li>
+
+<li class="nav-item dropdown">
+            <a href="./index.php?page=HIV_testing_service" class="nav-link nav-HIV_testing_service tree-item"  data-toggle="toggle" data-placement="top" title="HIV TESTING SERVICE">
+              <i class="nav-icon fas fa-sign-out-alt" style="color:#CD853F;font-size:10px;"></i>
+              <p style="color: black; font-size:11px;">
+                HIV Testing Service
+              </p>
+            </a>
+          </li> 
+
+<li class="nav-item dropdown">
+            <a href="./index.php?page=tuberculosis_service" class="nav-link nav-tuberculosis_service tree-item"  data-toggle="toggle" data-placement="top" title="TUBERCULOSIS SERVICE">
+              <i class="nav-icon fas fa-sign-out-alt" style="color:#CD853F;font-size:10px;"></i>
+              <p style="color: black; font-size:11px;">
+                Tuberculosis Service
+              </p>
+            </a>
+          </li> 
+
+<li class="nav-item dropdown">
+            <a href="./index.php?page=STI_service" class="nav-link nav-STI_service tree-item"  data-toggle="toggle" data-placement="top" title="HIV TESTING SERVICE">
+              <i class="nav-icon fas fa-sign-out-alt" style="color:#CD853F;font-size:10px;"></i>
+              <p style="color: black; font-size:11px;">
+                STI Service
+              </p>
+            </a>
+          </li> 
+
+<li class="nav-item dropdown">
+            <a href="./index.php?page=Covid_19_service" class="nav-link nav-Covid_19_service tree-item"  data-toggle="toggle" data-placement="top" title="COVID 19 SERVICE">
+              <i class="nav-icon fas fa-sign-out-alt" style="color:#CD853F;font-size:10px;"></i>
+              <p style="color: black; font-size:11px;">
+                Covid 19 Service
+              </p>
+            </a>
+          </li> 
+
+          <li class="nav-item dropdown">
+            <a href="./index.php?page=clinical_referral" class="nav-link nav-clinical_referral tree-item"  data-toggle="toggle" data-placement="top" title="COVID 19 SERVICE">
+              <i class="nav-icon fas fa-sign-out-alt" style="color:#CD853F;font-size:10px;"></i>
+              <p style="color: black; font-size:11px;">
+                Clinical Referral
+              </p>
+            </a>
+          </li> 
+
+          <li class="nav-item dropdown">
+            <a href="./index.php?page=death_and_causes" class="nav-link nav-death_and_causes tree-item"  data-toggle="toggle" data-placement="top" title="COVID 19 SERVICE">
+              <i class="nav-icon fas fa-sign-out-alt" style="color:#CD853F;font-size:10px;"></i>
+              <p style="color: black; font-size:11px;">
+                Death and Causes
+              </p>
+            </a>
+          </li> 
+
+
+          <li class="nav-item dropdown">
+            <a href="./index.php?page=prisoner_health_card_info" class="nav-link nav-prisoner_health_card_info tree-item"  data-toggle="toggle" data-placement="top" title="VIEW AND EDITPRISONER HEALTH CARD INFO">
+              <i class="nav-icon fas fa-eye" style="color:#CD853F;font-size:10px;"></i>
+              <p style="color: black; font-size:11px;">
+                View & Edit Card Info
+              </p>
+            </a>
+          </li> 
+
+          <!-- <li class="nav-item dropdown">
+            <a href="./index.php?page=ART_number" class="nav-link nav-ART_number tree-item"  data-toggle="toggle" data-placement="top" title="UPDATE ART NUMBER">
+              <i class="nav-icon fas fa-user-edit" style="color:#CD853F;font-size:10px;"></i>
+              <p style="color: black; font-size:11px;">
+                Update ART Number
+              </p>
+            </a>
+          </li> 
+ -->
+
+
+            </ul>
+          </li>
+ <?php endif; ?>
+
+
+ <?php if($_SESSION['login_type'] == 4): ?>
+           <li class="nav-item">
+            <a href="#" class="nav-link nav-edit_project nav-view_project">
+              <i class="fas fa-user-md nav-icon" style="color:#CD853F;"></i>
+              <p>
+              Outpatient Department
+                <i class="right fas fa-angle-left" style="color:#CD853F;"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" id="mouseover1">
+           
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=outpatient_department" class="nav-link nav-outpatient_department tree-item" data-toggle="toggle" data-placement="top" title="PHYSICAL CHARACTERISTICS">
+                  <i class="fas fa-user-md nav-icon" style="color:#CD853F; font-size:11px;"></i>
+                  <p style="color: black; font-size:11px;">Outpatient Department</p>
+                </a>
+              </li>
+          
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=LAB_test_results" class="nav-link nav-LAB_test_results tree-item" data-toggle="toggle" data-placement="top" title="MEDICAL SCREENING SERVICES">
+                  <i class="fas fa-microscope nav-icon" style="color:#CD853F; font-size:11px;"></i>
+                  <p style="color: black; font-size:11px;">LAB Test Results</p>
+                </a>
+              </li>
+
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=view_vaccination" class="nav-link nav-view_vaccination tree-item" data-toggle="toggle" data-placement="top" title="VIEW VACCINATIONS">
+                  <i class="fas fa-syringe nav-icon" style="color:#CD853F; font-size:11px;"></i>
+                  <p style="color: black; font-size:11px;">View Vaccination</p>
+                </a>
+              </li>
+
+              
+            
+
+            </ul>
+          </li>
+ <?php endif; ?>
+
+
+ <?php if($_SESSION['login_type'] == 4): ?>
+           <li class="nav-item">
+            <a href="#" class="nav-link nav-edit_project nav-view_project">
+              <i class="fas fa-vials nav-icon" style="color:#CD853F;"></i>
+              <p>
+                Laboratory
+                <i class="right fas fa-angle-left" style="color:#CD853F;"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" id="mouseover2">
+          
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=new_tests" class="nav-link nav-new_tests tree-item" data-toggle="toggle" data-placement="top" title="NEW TESTS">
+                  <i class="fas fa-vial nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:10px;">New Test</p>
+                </a>
+              </li>
+
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=pre_booked_lab_test_list" class="nav-link nav-pre_booked_lab_test_list tree-item" data-toggle="toggle" data-placement="top" title="PRE BOOKED TEST">
+                  <i class="fas fa-virus nav-icon" style="color:#CD853F; font-size:11px;"></i>
+                  <p style="color: black; font-size:11px;">Pre-Booked Test</p>
+                </a>
+              </li>
+
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=vaccination" class="nav-link nav-vaccination tree-item" data-toggle="toggle" data-placement="top" title="VACCINATION">
+                  <i class="fas fa-syringe nav-icon" style="color:#CD853F; font-size:11px;"></i>
+                  <p style="color: black; font-size:11px;">Vaccination</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+ <?php endif; ?>
+
+
+ <?php if($_SESSION['login_type'] == 1): ?>
+           <li class="nav-item">
+            <a href="#" class="nav-link nav-edit_project nav-view_project">
+              <i class="fas fa-pills nav-icon" style="color:#CD853F;"></i>
+              <p>
+                Pharmacy
+                <i class="right fas fa-angle-left" style="color:#CD853F;"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" id="mouseover4">
+
+             <!--  <li class="nav-item" id="side">
+                <a href="./index.php?page=ART_service" class="nav-link nav-ART_service tree-item" data-toggle="toggle" data-placement="top" title="ART SERVICE">
+                  <i class="fas fa-tablets nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:10px;">ART</p>
+                </a>
+              </li> -->
+
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=prescriptions" class="nav-link nav-prescriptions tree-item" data-toggle="toggle" data-placement="top" title="MEDICAL PRESCRIPTIONS">
+                  <i class="fas fa-prescription-bottle-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:10px;">Prescriptions</p>
+                </a>
+              </li>
+
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=pharmacy" class="nav-link nav-pharmacy tree-item" data-toggle="toggle" data-placement="top" title="MANAGE PHARMACY">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size: 10px;">Manage Pharmacy</p>
+                </a>
+              </li>
+
+              
+            </ul>
+          </li>
+ <?php endif; ?>
+          
+           
+            <!-- ul class="nav nav-treeview" id="mouseover5">
+           
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=basic_particulars" class="nav-link nav-basic_particulars tree-item" data-toggle="toggle" data-placement="top" title="BASIC PARTICULARS">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:11px;">Basic-Particulars</p>
+                </a>
+              </li>
+          
+            </ul-->
+          </li>
+
+
+ <?php if($_SESSION['login_type'] == 1): ?>
+           <li class="nav-item">
+            <a href="#" class="nav-link nav-edit_project nav-view_project">
+              <i class="fas fa-heart nav-icon" style="color:#CD853F;"></i>
+              <p>
+                Welfare
+                <i class="right fas fa-angle-left" style="color:#CD853F;"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" id="mouseover5">
+           
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=prison_issuances" class="nav-link nav-prison_issuances tree-item" data-toggle="toggle" data-placement="top" title="PRISON ISSUANCES">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:11px;">Prison Issuances</p>
+                </a>
+              </li>
+          
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=personal_belongings" class="nav-link nav-personal_belongings tree-item" data-toggle="toggle" data-placement="top" title="PERSONAL BELONGINGS">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:11px;">Personal Belongings</p>
+                </a>
+              </li>
+
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=batching_and_baggage_of_prisoner_belongings_and_personal_effects" class="nav-link nav-batching_and_baggage_of_prisoner_belongings_and_personal_effects tree-item" data-toggle="toggle" data-placement="top" title="BATCHING AND BAGGAGE">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:11px;">Batching and Baggage</p>
+                </a>
+              </li>
+
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=stage_leader_promotion_or_reduction_record" class="nav-link nav-stage_leader_promotion_or_reduction_record tree-item" data-toggle="toggle" data-placement="top" title="STAGE LEADER">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:11px;">Stage Leader</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+ <?php endif; ?>
+          
+
+ <li class="nav-item">
+            <a href="#" class="nav-link nav-edit_project nav-view_project">
+              <i class="fas  fa-file-upload nav-icon" style="color:#CD853F;"></i>
+              <p>
+                Media & Files
+                <i class="right fas fa-angle-left" style="color:#CD853F;"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" id="mouseover6">
+            <?php if($_SESSION['login_type'] == 1 || $_SESSION['login_type'] == 1): ?>
+              <li class="nav-item">
+                <a href="./index.php?page=add_document" class="nav-link nav-add_document tree-item" data-toggle="toggle" data-placement="top" title="ADD DOCUMENTS">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;" ></i>
+                  <p style="color: black; font-size:11px;">Add File(s)</p>
+                </a>
+              </li>
+            <?php endif; ?>
+              <li class="nav-item">
+                <a href="./index.php?page=view_documents" class="nav-link nav-view_documents tree-item" data-toggle="toggle" data-placement="top" title="VIEW DOCUMENTS">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:11px;">View File(s)</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="./index.php?page=charts" class="nav-link nav-charts tree-item" data-toggle="toggle" data-placement="top" title="USER UPLOADED DOCUMENTS IN CHARTS">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:11px;">Charts</p>
+                </a>
+              </li>
+            </ul>
+          </li> 
+
+<?php if($_SESSION['login_type'] == 1 || $_SESSION['login_type'] == 2 || $_SESSION['login_type'] == 4 || $_SESSION['login_type'] == 5): ?>
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-edit_project nav-view_project">
+              <i class="fas fa-chart-bar nav-icon" style="color:#CD853F;"></i>
+              <p>
+                Clinical Reports
+                <i class="right fas fa-angle-left" style="color:#CD853F;"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" id="mouseover8">
+            
+             
+
+               <li class="nav-item" id="side">
+                <a href="./index.php?page=reports" class="nav-link nav-reports tree-item" data-toggle="toggle" data-placement="top" title="REPORTS IN TABLES">
+                  <i class="fas fa-table nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:10px;">Reports</p>
+                </a>
+              </li>
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=STIs_report" class="nav-link nav-STIs_report tree-item" data-toggle="toggle" data-placement="top" title="STIs REPORT WITH NAMES">
+                  <i class="fas fa-table nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:10px;">STIs With Names</p>
+                </a>
+              </li>
+
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=eligible_for_HIV_test" class="nav-link nav-eligible_for_HIV_test tree-item" data-toggle="toggle" data-placement="top" title="ELIGIBLE FOR HIV TEST REPORT">
+                  <i class="fas fa-table nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:10px;">Eligilble For HIV Test</p>
+                </a>
+              </li>
+
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=death_and_causes_report" class="nav-link nav-death_and_causes_report tree-item" data-toggle="toggle" data-placement="top" title="DEATH AND CAUSES REPORT">
+                  <i class="fas fa-table nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:11px;">Death and Causes</p>
+                </a>
+              </li>
+
+              
+
+             <!-- <li class="nav-item" id="side">
+                <a href="./index.php?page=admitted_referrals" class="nav-link nav-admitted_referrals tree-item" data-toggle="toggle" data-placement="top" title="ALL CLIENTS ADMITTED AT THE NEAREST HOSPITAL">
+                  <i class="fas fa-list-ol nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:11px;">Admitted</p>
+                </a>
+              </li> -->
+              
+            </ul>
+          </li> 
+<?php endif; ?>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-edit_project nav-view_project">
+              <i class="fas  fa-archive nav-icon" style="color:#CD853F;"></i>
+              <p>
+                Archive
+                <i class="right fas fa-angle-left" style="color:#CD853F;"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" id="mouseover7">
+              <li class="nav-item">
+               <a href="./index.php?page=discharged_prisoners" class="nav-link nav-discharged_prisoners tree-item" data-toggle="toggle" data-placement="top" title="DISCHARGED PRISONERS">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:11px;">Discharged Prisoners</p>
+                </a>
+              </li>
+
+              <!-- <li class="nav-item">
+                <a href="./index.php?page=temporarily_discharged_prisoners" class="nav-link nav-temporarily_discharged_prisoners tree-item" data-toggle="toggle" data-placement="top" title="TEMPORARILY DISCHARGED PRISONERS">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:11px;">Temporarily Discharged</p>
+                </a>
+              </li> -->
+
+              <li class="nav-item">
+                <a href="./index.php?page=documents_for_discharged_prisoners" class="nav-link nav-documents_for_discharged_prisoners tree-item" data-toggle="toggle" data-placement="top" title="VIEW DOCUMENTS">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black; font-size:11px;">View Documents</p>
+                </a>
+              </li>
+            </ul>
+          </li> 
+
+
+
+
+<?php if($_SESSION['login_type'] == 1): ?>
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-edit_project nav-view_project">
+              <i class="fas fa-chart-bar nav-icon" style="color:#CD853F;"></i>
+              <p>
+                Prison Reports
+                <i class="right fas fa-angle-left" style="color:#CD853F;"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" id="mouseover9">
+            
+              <li class="nav-item">
+                <a href="./index.php?page=health_statistics" class="nav-link nav-health_statistics tree-item">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black;">Health Statistics</p>
+                </a>
+              </li>
+           
+              <li class="nav-item">
+                <a href="./index.php?page=orders_per_KAE" class="nav-link nav-orders_per_KAE tree-item">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black;">Orders</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index.php?page=lead_status" class="nav-link nav-lead_status tree-item">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black;">Lead Status</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index.php?page=tables" class="nav-link nav-tables tree-item">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black;">Tables</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index.php?page=capacity" class="nav-link nav-capacity tree-item">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black;">Capacity</p>
+                </a>
+              </li>
+              <?php endif; ?>
+            </ul>
+          </li> 
+
+
+          <?php if($_SESSION['login_type'] == 1): ?>
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-edit_user">
+              <i class="nav-icon fas fa-users" style="color:#CD853F;"></i>
+              <p>
+                Users
+                <i class="right fas fa-angle-left" style="color:#CD853F;"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" id="mouseover10">
+              <li class="nav-item">
+                <a href="./index.php?page=new_user" class="nav-link nav-new_user tree-item">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black;">Add New</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index.php?page=user_list" class="nav-link nav-user_list tree-item">
+                  <i class="fas fa-sign-out-alt nav-icon" style="color:#CD853F; font-size:10px;"></i>
+                  <p style="color: black;">List</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        <?php endif; ?>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+  <script>
+  	$(document).ready(function(){
+      var page = '<?php echo isset($_GET['page']) ? $_GET['page'] : 'home' ?>';
+  		var s = '<?php echo isset($_GET['s']) ? $_GET['s'] : '' ?>';
+      if(s!='')
+        page = page+'_'+s;
+  		if($('.nav-link.nav-'+page).length > 0){
+             $('.nav-link.nav-'+page).addClass('active')
+  			if($('.nav-link.nav-'+page).hasClass('tree-item') == true){
+            $('.nav-link.nav-'+page).closest('.nav-treeview').siblings('a').addClass('active')
+  				$('.nav-link.nav-'+page).closest('.nav-treeview').parent().addClass('menu-open')
+  			}
+        if($('.nav-link.nav-'+page).hasClass('nav-is-tree') == true){
+          $('.nav-link.nav-'+page).parent().addClass('menu-open')
+        }
+
+  		}
+     
+  	})
+  </script>
+
+  <script>
+    let test = document.getElementById("mouseover1");
+
+// This handler will be executed only once when the cursor
+// moves over the unordered list
+test.addEventListener("mouseenter", function( event ) {
+  // highlight the mouseenter target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+// This handler will be executed every time the cursor
+// is moved over a different list item
+test.addEventListener("mouseover1", function( event ) {
+  // highlight the mouseover target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+  </script>
+
+  <script>
+    let test = document.getElementById("mouseover1");
+
+// This handler will be executed only once when the cursor
+// moves over the unordered list
+test1.addEventListener("mouseenter", function( event ) {
+  // highlight the mouseenter target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+// This handler will be executed every time the cursor
+// is moved over a different list item
+test1.addEventListener("mouseover", function( event ) {
+  // highlight the mouseover target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+  </script>
+
+  <script>
+    let test2 = document.getElementById("mouseover2");
+
+// This handler will be executed only once when the cursor
+// moves over the unordered list
+test3.addEventListener("mouseenter", function( event ) {
+  // highlight the mouseenter target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+// This handler will be executed every time the cursor
+// is moved over a different list item
+test2.addEventListener("mouseover", function( event ) {
+  // highlight the mouseover target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+  </script>
+
+  <script>
+    let test3 = document.getElementById("mouseover3");
+
+// This handler will be executed only once when the cursor
+// moves over the unordered list
+test3.addEventListener("mouseenter", function( event ) {
+  // highlight the mouseenter target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+// This handler will be executed every time the cursor
+// is moved over a different list item
+test3.addEventListener("mouseover", function( event ) {
+  // highlight the mouseover target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+  </script>
+
+  <script>
+    let test4 = document.getElementById("mouseover4");
+
+// This handler will be executed only once when the cursor
+// moves over the unordered list
+test4.addEventListener("mouseenter", function( event ) {
+  // highlight the mouseenter target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+// This handler will be executed every time the cursor
+// is moved over a different list item
+test4.addEventListener("mouseover", function( event ) {
+  // highlight the mouseover target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+  </script>
+
+  <script>
+    let test5 = document.getElementById("mouseover5");
+
+// This handler will be executed only once when the cursor
+// moves over the unordered list
+test5.addEventListener("mouseenter", function( event ) {
+  // highlight the mouseenter target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+// This handler will be executed every time the cursor
+// is moved over a different list item
+test5.addEventListener("mouseover", function( event ) {
+  // highlight the mouseover target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+  </script>
+
+  <script>
+    let test6 = document.getElementById("mouseover6");
+
+// This handler will be executed only once when the cursor
+// moves over the unordered list
+test6.addEventListener("mouseenter", function( event ) {
+  // highlight the mouseenter target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+// This handler will be executed every time the cursor
+// is moved over a different list item
+test6.addEventListener("mouseover", function( event ) {
+  // highlight the mouseover target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+  </script>
+
+  <script>
+    let test7 = document.getElementById("mouseover7");
+
+// This handler will be executed only once when the cursor
+// moves over the unordered list
+test7.addEventListener("mouseenter", function( event ) {
+  // highlight the mouseenter target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+// This handler will be executed every time the cursor
+// is moved over a different list item
+test7.addEventListener("mouseover", function( event ) {
+  // highlight the mouseover target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+  </script>
+
+  <script>
+    let test8 = document.getElementById("mouseover8");
+
+// This handler will be executed only once when the cursor
+// moves over the unordered list
+test8.addEventListener("mouseenter", function( event ) {
+  // highlight the mouseenter target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+// This handler will be executed every time the cursor
+// is moved over a different list item
+test8.addEventListener("mouseover", function( event ) {
+  // highlight the mouseover target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+  </script>
+
+  <script>
+    let test9 = document.getElementById("mouseover9");
+
+// This handler will be executed only once when the cursor
+// moves over the unordered list
+test9.addEventListener("mouseenter", function( event ) {
+  // highlight the mouseenter target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+// This handler will be executed every time the cursor
+// is moved over a different list item
+test9.addEventListener("mouseover", function( event ) {
+  // highlight the mouseover target
+  event.target.style.color = "#CD853F";
+
+  // reset the color after a short delay
+  setTimeout(function() {
+    event.target.style.color = "";
+  }, 2000);
+}, false);
+
+  </script>
+
+
+<script>
+  $(function () {
+  $('[data-toggle="toggle"]').tooltip()
+})
+</script>
