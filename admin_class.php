@@ -329,6 +329,8 @@ Class Action {
 	function save_basic_particulars() {
 		extract($_POST);
 		$data = "";
+		$user = $_SESSION['login_id'];
+
 		foreach ($_POST as $k => $v) {
 			// Skip 'id' field and non-numeric keys
 			if ($k !== 'id' && !is_numeric($k)) {
@@ -348,31 +350,41 @@ Class Action {
 				}
 			}
 		}
+		// $message = "INSERT INTO prisoners SET $data";
+		// return $message;
 	
 		if (empty($id)) {
 			try {
 				// Execute the INSERT query
-				$save = $this->db->query("INSERT INTO prisoners SET $data");
+				$save = $this->db->query("INSERT INTO prisoners SET $data, created_by = $user");
 				if ($save) {
 					$result = $this->db->query("SELECT * FROM prisoners ORDER BY id DESC LIMIT 1;");
-        
-        			if ($result && $result->num_rows > 0) {
-            		// Fetch the inserted record
-            			$insertedRecord = $result->fetch_assoc();
-						return json_encode(array('success' => true, 'message' => 'Prisoner has successfully been registered.', 'data' => $insertedRecord));
-					}else{
-						return json_encode(array('success' => true, 'message' => 'Prisoner has successfully been registered.', 'data' => []));
-					}
+					$insertedRecord = ($result && $result->num_rows > 0) ? $result->fetch_assoc() : [];
+
+					return json_encode(array('success' => true, 'message' => 'Prisoner has successfully been registered.', 'data' => $insertedRecord));
+					
 				} else {
-					return json_encode(array('success' => false, 'error' => 'Failed to insert record.'));
+					return json_encode(array('success' => false, 'message' => 'Failed to insert record.'));
 				}
 			} catch (mysqli_sql_exception $e) {
-				return json_encode(array('success' => false, 'error' => 'Duplicate entry for prisoners_no.'));
+				return json_encode(array('success' => false, 'error' => $e->getMessage(), 'message' => 'Failed to insert record.'));
 			}
 		} else {
-			// Update existing record if 'id' is provided
-			$save = $this->db->query("UPDATE prisoners SET $data WHERE id = $id");
-			// Handle update result if needed
+			try {
+				// Update existing record if 'id' is provided
+				$save = $this->db->query("UPDATE prisoners SET $data WHERE id = $id");
+			if ($save) {
+				$result = $this->db->query("SELECT * FROM prisoners WHERE id = $id;");
+				$updatedRecord = ($result && $result->num_rows > 0) ? $result->fetch_assoc() : [];
+
+				return json_encode(array('success' => true, 'message' => 'Prisoner has successfully been updated.', 'data' => $updatedRecord));
+				
+			} else {
+				return json_encode(array('success' => false, 'message' => 'Failed to update record.'));
+			}
+		} catch (mysqli_sql_exception $e) {
+			return json_encode(array('success' => false, 'error' => $e->getMessage(), 'message' => 'Failed to update record.'));
+		}
 		}
 	}
 
@@ -870,6 +882,7 @@ function save_vaccination(){
 	function save_hiv_aids(){
 		extract($_POST);
 		$data = "";
+		$user = $_SESSION['login_id'];
 		foreach($_POST as $k => $v){
 			if(!in_array($k, array('id')) && !is_numeric($k)){
 				if($k == 'comment')
@@ -882,9 +895,9 @@ function save_vaccination(){
 			}
 		}
 		if(empty($id)){
-			$save = $this->db->query("INSERT INTO hiv_test set $data");
+			$save = $this->db->query("INSERT INTO hiv_test set $data, created_by = $user");
 		}else{
-			$save = $this->db->query("UPDATE hiv_test set $data where id = $id");
+			$save = $this->db->query("UPDATE hiv_test set $data, updated_by = $user, updated_at = NOW() where id = $id");
 		}
 		if($save){
 			return 1;
@@ -938,10 +951,12 @@ function save_ART_history_at_entry(){
 function save_vitals(){
 		extract($_POST);
 		$data = "";
+		$user = $_SESSION['login_id'];
 		foreach($_POST as $k => $v){
-			if(!in_array($k, array('id')) && !is_numeric($k)){
+			if(!in_array($k, array('id')) && !is_numeric($k) && $v !== ''){
 				if($k == 'comment')
 					$v = htmlentities(str_replace("'","&#x2022;",$v));
+				
 				if(empty($data)){
 					$data .= " $k='$v' ";
 				}else{
@@ -949,10 +964,11 @@ function save_vitals(){
 				}
 			}
 		}
+		//return $data;
 		if(empty($id)){
-			$save = $this->db->query("INSERT INTO vitals set $data");
+			$save = $this->db->query("INSERT INTO vitals set $data, created_by='$user'");
 		}else{
-			$save = $this->db->query("UPDATE vitals set $data where id = $id");
+			$save = $this->db->query("UPDATE vitals set $data, updated_by='$user', updated_at=NOW() where id = $id");
 		}
 		if($save){
 			return 1;
@@ -1484,38 +1500,66 @@ function save_medical_treatment(){
 					}
 					break;
 				case "vitals":
-					$whereClause = "";
+					$whereClause = "WHERE voided = 0 ";
     				if(!empty($id)){
-    				    $whereClause = "WHERE id=".$id;
+    				    $whereClause .= "AND id=".$id;
     				} elseif(!empty($pid)){
-    				    $whereClause = "WHERE prisoners_no=".$pid;
+    				    $whereClause .= "AND prisoners_no=".$pid;
    			 		}
 					$statement = "SELECT * FROM vitals ".$whereClause.";";
 					break;
 				case "hiv_testing":
-					$whereClause = "";
+					$whereClause = "WHERE voided = 0 ";
     				if(!empty($id)){
-    				    $whereClause = "WHERE id=".$id;
+    				    $whereClause .= "AND id=".$id;
     				} elseif(!empty($pid)){
-    				    $whereClause = "WHERE prisoners_no=".$pid;
+    				    $whereClause .= "AND prisoners_no=".$pid;
    			 		}
 					$statement = "SELECT * FROM hiv_test ".$whereClause.";";
 					break;
 				case "sti_service":
-					$statement = "SELECT * FROM stis_service WHERE prisoners_no=".$id.";";
+					$whereClause = "WHERE voided = 0 ";
+    				if(!empty($id)){
+    				    $whereClause .= "AND id=".$id;
+    				} elseif(!empty($pid)){
+    				    $whereClause .= "AND prisoners_no=".$pid;
+   			 		}
+					$statement = "SELECT * FROM stis_service ".$whereClause.";";
 					break;
 				case "tb_service":
-					$statement = "SELECT * FROM tb_test WHERE prisoners_no=".$id.";";
+					$whereClause = "WHERE voided = 0 ";
+    				if(!empty($id)){
+    				    $whereClause .= "AND id=".$id;
+    				} elseif(!empty($pid)){
+    				    $whereClause .= "AND prisoners_no=".$pid;
+   			 		}
+					$statement = "SELECT * FROM tb_test ".$whereClause.";";
 					break;
 				case "covid_service":
-					$statement = "SELECT * FROM covid19 WHERE prisoners_no=".$id.";";
+					$whereClause = "WHERE voided = 0 ";
+    				if(!empty($id)){
+    				    $whereClause .= "AND id=".$id;
+    				} elseif(!empty($pid)){
+    				    $whereClause .= "AND prisoners_no=".$pid;
+   			 		}
+					$statement = "SELECT * FROM covid19 ".$whereClause.";";
 					break;
 				case "clinic_referal":
-					$statement = "SELECT * FROM clinical_referral WHERE prisoners_no=".$id.";";
+					$whereClause = "WHERE voided = 0 ";
+    				if(!empty($id)){
+    				    $whereClause .= "AND id=".$id;
+    				} elseif(!empty($pid)){
+    				    $whereClause .= "AND prisoners_no=".$pid;
+   			 		}
+					$statement = "SELECT * FROM clinical_referral ".$whereClause.";";
+					break;
+				case "outcomes":
+					$statement = "SELECT * FROM outcomes WHERE prisoners_no=".$pid.";";
 					break;
 			default:
 				break;
 		}
+		
 		$qry = $this->db->query($statement);
 		if($qry->num_rows > 0){
 			while($row= $qry->fetch_assoc()){
@@ -1524,7 +1568,7 @@ function save_medical_treatment(){
 			$results[0]['num_rows'] = $qry->num_rows;
 			return json_encode($results);
 		}else{
-			return $id;
+			return 0;
 		}
 	}
 
@@ -1532,7 +1576,7 @@ function save_medical_treatment(){
 		extract($_POST);
 		$results = "";
 		$patients = array();
-		$statement = "SELECT p.*, concat(p.fname, ' ', p.lname) AS pname, r.name AS region_name, s.name AS station_name FROM prisoners p INNER JOIN regions r ON r.id = p.regions_id INNER JOIN stations s ON s.id = p.stations_id WHERE 1=1";
+		$statement = "SELECT p.*, concat(p.fname, ' ', p.lname) AS pname FROM prisoners p WHERE 1=1";
 		
 		if (!empty($firstName)) {
 			$statement .= " AND fname LIKE '%" . $firstName . "%'";
@@ -1559,6 +1603,13 @@ function save_medical_treatment(){
 			return [];
 		}
 	}
+	function void_obs(){
+		extract($_POST);
+		$delete = $this->db->query("UPDATE $encounter SET voided = 1, voided_by = $user, voided_at= CURRENT_DATE() WHERE id = $id and prisoners_no = $prisoners_no;");
+		if($delete){
+			return 1;
+		}
+	}
 
 function curr_visits(){
 	$statement = 'SELECT MONTHNAME(visit_date) AS month, "HTS" program, COUNT(*) AS visit_count 
@@ -1583,6 +1634,30 @@ function curr_visits(){
 	}
 	// Return the formatted data as JSON
 	return json_encode($data);
+}
+
+function update_outcome(){
+	extract($_POST);
+	$data = "";
+	foreach($_POST as $k => $v){
+		if(empty($data)){
+			$data .= " $k='$v' ";
+		}else{
+			$data .= ", $k='$v' ";
+		}
+	}
+	
+	$results = $this->db->query("SELECT * FROM outcomes WHERE prisoners_no = $prisoners_no");
+
+	if ($results->num_rows > 0) {
+		$save = $this->db->query("UPDATE outcomes set $data where prisoners_no = $prisoners_no");
+	}else{
+		$save = $this->db->query("INSERT INTO outcomes set $data");
+	}
+
+	if($save){
+		return 1;
+	}
 }
 
 

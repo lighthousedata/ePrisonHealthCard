@@ -80,8 +80,6 @@ transform: rotate(360deg);
 </style>
 
 <?php 
-      $regions_id = $_SESSION['login_regions_id'];
-      $stations_id = $_SESSION['login_stations_id'];
       $user_id = $_SESSION['login_id']; 
 ?>
 
@@ -91,14 +89,12 @@ transform: rotate(360deg);
   </div>
   <div class="modal-body row col-md-12">
     <form action="" id="tb-form">
-      <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
-      <input type="hidden" name="regions_id" id="regions_id" value="<?php echo isset($regions_id) ? $regions_id : '' ?>">
-      <input type="hidden" name="stations_id" id="stations_id" value="<?php echo isset($stations_id) ? $stations_id : '' ?>">
-      <input type="hidden" name="prisoners_no" id="tb_prisoner_id" value="<?php echo isset($prisoners_no) ? $prisoners_no : '' ?>">
+      <input type="hidden" name="id" id="tb-id" value="">
+      <input type="hidden" name="prisoners_no" id="tb_prisoner_id" value="">
       <div class="form-group row">
         <label for="visit_date" class="col-md-5 col-form-label">Visit Date</label>
         <div class="col-md-7">
-          <input type="date" class="form-control" value="<?php echo isset($visit_date) ? date("Y-m-d",strtotime($visit_date)) : '' ?>" name="visit_date" required>
+          <input type="date" class="form-control" value="" name="visit_date" id="tb_visit_date" required>
         </div>
       </div>
       <div class="form-group row">
@@ -119,7 +115,7 @@ transform: rotate(360deg);
         </div>
       </div>
       <div class="form-group row">
-        <label for="eligible" class="col-md-5 col-form-label">TB Screening</label>
+        <label for="tb_screening" class="col-md-5 col-form-label">TB Screening</label>
         <div class="col-md-7">
           <div class="form-check form-check-inline">
             <input class="form-check-input vericaltext" type="radio" name="tb_screening" id="tb_screening_not_pre" <?php if (isset($tb_screening) && $tb_screening=="Not Presumptive") echo "checked";?> value="Not Presumptive" required>
@@ -186,8 +182,8 @@ transform: rotate(360deg);
       <div class="form-group row">
         <label for="comment" class="col-md-5 col-form-label">Comment</label>
         <div class="col-md-7">
-          <textarea name="comment" class="form-control" id="comment" row="3" required>
-            <?php echo isset($comment) ? $comment : '' ?>
+          <textarea name="comment" class="form-control" id="comment" row="3">
+            
           </textarea>
         </div>
       </div>
@@ -236,10 +232,10 @@ transform: rotate(360deg);
 <script type="text/javascript">
   $(function () {
     $("input[name='tb_screening']").click(function () {
-      if ($("#tb_screening_nd").is(":checked")) {
+      if ($("#tb_screening_nd, #tb_screening_not_pre").is(":checked")) {
         console.log("Hello");
         $("#test_criteria_new, #test_criteria_retest, #tb_test_neg, #tb_test_pos, #tb_test_unk, #tb_type_of_test").attr("disabled", "disabled");
-      }else if ($("#tb_screening_pre, #tb_screening_not_pre").is(":checked")){
+      }else if ($("#tb_screening_pre").is(":checked")){
         $("#test_criteria_new, #test_criteria_retest, #tb_test_neg, #tb_test_pos, #tb_test_unk, #tb_type_of_test").removeAttr("disabled");
       }
     });

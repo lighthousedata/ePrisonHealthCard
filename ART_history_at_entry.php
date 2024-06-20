@@ -348,6 +348,7 @@ $('#manage-project').submit(function(e) {
             $("#dob").text(result[0].dob);
             $("#next_of_kin").text(result[0].next_of_kin_contact);
             $("#cell_num").text(result[0].cell);
+            $("#address").text(result[0].home_village+" / "+result[0].home_ta+" / "+result[0].home_district);
             $("#entry_s").text(result[0].status);
             $("#entry_d").text(result[0].entry_date);
             $("#resident_status").val(result[0].status);

@@ -427,5 +427,17 @@ if($action == 'curr_visits'){
 		echo $results;
 }
 
+if($action == 'void_obs'){
+	$results = $crud->void_obs();
+	if($results)
+		echo $results;
+}
+
+if($action == 'update_outcome'){
+	$results = $crud->update_outcome();
+	if($results)
+		echo $results;
+}
+
 ob_end_flush();
 ?>

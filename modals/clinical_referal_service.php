@@ -35,8 +35,7 @@ elseif ($conn->query("INSERT INTO hospital_name (stations_id, regions_id,name) v
  ?>
 
 <?php 
-      $regions_id = $_SESSION['login_regions_id'];
-      $stations_id = $_SESSION['login_stations_id'];
+
       $user_id = $_SESSION['login_id']; 
 ?>
 
@@ -46,29 +45,27 @@ elseif ($conn->query("INSERT INTO hospital_name (stations_id, regions_id,name) v
       </div>
       <div class="modal-body row col-md-12">
       <form action="" id="referal-form">
-        <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
-        <input type="hidden" name="regions_id" id="regions_id" value="<?php echo isset($regions_id) ? $regions_id : '' ?>">
-        <input type="hidden" name="stations_id" id="stations_id" value="<?php echo isset($stations_id) ? $stations_id : '' ?>">
-        <input type="hidden" name="prisoners_no" id="referal_prisoner_id" value="<?php echo isset($prisoners_no) ? $prisoners_no : '' ?>">
+        <input type="hidden" name="id" id="clinical-ref-id" value="">
+        <input type="hidden" name="prisoners_no" id="referal_prisoner_id" value="">
         <div class="form-group row">
           <label for="visit_date" class="col-md-5 col-form-label">Visit Date</label>
           <div class="col-md-7">
-              <input type="date" class="form-control" value="<?php echo isset($visit_date) ? date("Y-m-d",strtotime($visit_date)) : '' ?>" name="visit_date" required>
+              <input type="date" class="form-control" value="" name="visit_date" id="clinic_ref_visit_date" required>
           </div>
         </div>
         <div class="form-group row">
           <label for="resident_status" class="col-md-5 col-form-label">Resident Status</label>
           <div class="col-md-7">
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="resident_status" id="entry" <?php if (isset($resident_status) && $resident_status=="Entry") echo "checked";?> value="Entry" required>
+              <input class="form-check-input" type="radio" name="resident_status" id="entry" value="Entry" required>
               <label class="form-check-label" for="entry">Entry</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="resident_status" id="stay" <?php if (isset($resident_status) && $resident_status=="Stay") echo "checked";?> value="Stay" required>
+              <input class="form-check-input" type="radio" name="resident_status" id="stay" value="Stay" required>
               <label class="form-check-label" for="stay">Stay</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="resident_status" id="exit" <?php if (isset($resident_status) && $resident_status=="Exit") echo "checked";?> value="Exit" required>
+              <input class="form-check-input" type="radio" name="resident_status" id="exit" value="Exit" required>
               <label class="form-check-label" for="exit">Exit</label>
             </div>
           </div>
@@ -77,11 +74,11 @@ elseif ($conn->query("INSERT INTO hospital_name (stations_id, regions_id,name) v
           <label for="clinical_referral" class="col-md-5 col-form-label">Clinical Referal</label>
           <div class="col-md-7">
             <div class="form-check form-check-inline">
-              <input class="form-check-input vericaltext" type="radio" name="clinical_referral" id="clinical_referral_yes" <?php if (isset($clinical_referral) && $clinical_referral=="Yes") echo "checked";?> value="Yes" required>
+              <input class="form-check-input vericaltext" type="radio" name="clinical_referral" id="clinical_referral_yes" value="Yes" required>
               <label class="form-check-label" for="clinical_referral_yes">Yes</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="clinical_referral" id="clinical_referral_no" <?php if (isset($clinical_referral) && $clinical_referral=="No") echo "checked";?> value="No"  required>
+              <input class="form-check-input" type="radio" name="clinical_referral" id="clinical_referral_no" value="No"  required>
               <label class="form-check-label" for="clinical_referral_no">No</label>
             </div>
           </div>
@@ -94,42 +91,14 @@ elseif ($conn->query("INSERT INTO hospital_name (stations_id, regions_id,name) v
             </button>
           </label>
           <div class="col-md-7">
-            <select class="form-control" name="hospital_name" id="hospital_name" required>
+            <select class="form-control form-control-sm select2insidemodal" name="hospital_name" id="hospital_name" required>
             </select>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="outcome" class="col-md-5 col-form-label">Outcome</label>
-          <div class="col-md-7">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input vericaltext" type="radio" name="outcome" id="outcome_released" <?php if (isset($outcome) && $outcome=="Released") echo "checked";?> value="Released" required>
-              <label class="form-check-label" for="outcome_released">Released</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="outcome" id="outcome_transfered" <?php if (isset($outcome) && $outcome=="Transfered") echo "checked";?> value="Transfered" required>
-              <label class="form-check-label" for="outcome_transfered">Transfered</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="outcome" id="outcome_died" <?php if (isset($outcome) && $outcome=="Died") echo "checked";?> value="Died" required>
-              <label class="form-check-label" for="outcome_died">Died</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="outcome" id="outcome_escape" <?php if (isset($outcome) && $outcome=="Escape") echo "checked";?> value="Escape" required>
-              <label class="form-check-label" for="outcome_escape">Escape</label>
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="outcome_date" class="col-md-5 col-form-label">Outcome date</label>
-          <div class="col-md-7">
-          <input type="date" name="outcome_date" id="outcome_date" value="<?php echo isset($app_date) ? date("Y-m-d",strtotime($visit_date)) : '' ?>" class="form-control" required>
           </div>
         </div>
         <div class="form-group row">
           <label for="comment" class="col-md-5 col-form-label">Comment</label>
           <div class="col-md-7">
-            <textarea name="comment" class="form-control" id="comment" row="3" required>
-              <?php echo isset($comment) ? $comment : '' ?>
+            <textarea name="comment" class="form-control" id="comment" row="3">
             </textarea>
           </div>
         </div>
@@ -156,12 +125,13 @@ elseif ($conn->query("INSERT INTO hospital_name (stations_id, regions_id,name) v
 </div>
 
 <script>
+
   $(function () {
     $("input[name='clinical_referral']").click(function () {
       if ($("#clinical_referral_no").is(":checked")) {
-        $("#outcome_released, #outcome_transfered, #outcome_died, #outcome_escape, #hospital_name, #outcome_date").attr("disabled", "disabled");
+        $("#hospital_name").attr("disabled", "disabled");
       }else if ($("#clinical_referral_yes").is(":checked")) {
-        $("#outcome_released, #outcome_transfered, #outcome_died, #outcome_escape, #hospital_name, #outcome_date").removeAttr("disabled");
+        $("#hospital_name").removeAttr("disabled");
       }
     });
   });
@@ -182,7 +152,7 @@ elseif ($conn->query("INSERT INTO hospital_name (stations_id, regions_id,name) v
                     alert_toast('Data successfully saved',"success");
                     getReferalObs();
                     setTimeout(function(){
-                      $('#tbModal').modal('hide');
+                      $('#referalModal').modal('hide');
                       $("#preloader2").hide();
                     },2000)
                 }

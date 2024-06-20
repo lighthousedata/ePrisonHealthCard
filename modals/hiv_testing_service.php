@@ -74,7 +74,7 @@ elseif ($conn->query("INSERT INTO hiv_test_type (stations_id, regions_id,name) v
         <div class="form-group row">
           <label for="visit_date" class="col-md-5 col-form-label">Visit Date</label>
           <div class="col-md-7">
-              <input type="date" class="form-control" value="" name="visit_date" id="visit_date" required>
+              <input type="date" class="form-control" value="" name="visit_date" id="hts_visit_date" required>
           </div>
         </div>
         <div class="form-group row">
@@ -115,7 +115,7 @@ elseif ($conn->query("INSERT INTO hiv_test_type (stations_id, regions_id,name) v
             </button>
           </label>
           <div class="col-md-7">
-            <select class="form-control" name="type_of_test" disabled="disabled" id="hts-test-type" required>
+            <select class="form-control" name="type_of_test" id="hts-test-type" required>
             </select>
           </div>
         </div>
@@ -123,23 +123,23 @@ elseif ($conn->query("INSERT INTO hiv_test_type (stations_id, regions_id,name) v
           <label for="hiv_test" class="col-md-5 col-form-label">HIV Test</label>
           <div class="col-md-7">
             <div class="form-check form-check-inline">
-              <input class="form-check-input vericaltext" type="radio" name="hiv_test" id="hiv_test_neg" value="Negative" required disabled="disabled">
+              <input class="form-check-input vericaltext" type="radio" name="hiv_test" id="hiv_test_neg" value="Negative" required>
               <label class="form-check-label" for="hiv_test_neg">Negative</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="hiv_test" id="hiv_test_pos" value="Positive" required disabled="disabled">
+              <input class="form-check-input" type="radio" name="hiv_test" id="hiv_test_pos" value="Positive" required>
               <label class="form-check-label" for="hiv_test_pos">Positive</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input vericaltext" type="radio" name="hiv_test" id="hiv_test_inc" value="Inconclusive" required disabled="disabled">
+              <input class="form-check-input vericaltext" type="radio" name="hiv_test" id="hiv_test_inc" value="Inconclusive" required>
               <label class="form-check-label" for="hiv_test_inc">Inconclusive</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="hiv_test" id="hiv_test_ref" value="Refused" required disabled="disabled">
+              <input class="form-check-input" type="radio" name="hiv_test" id="hiv_test_ref" value="Refused" required>
               <label class="form-check-label" for="hiv_test_ref">Refused</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="hiv_test" id="hiv_test_unk" value="Unknown" required disabled="disabled">
+              <input class="form-check-input" type="radio" name="hiv_test" id="hiv_test_unk" value="Unknown" required>
               <label class="form-check-label" for="hiv_test_unk">Unknown</label>
             </div>
           </div>

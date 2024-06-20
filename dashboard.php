@@ -34,6 +34,9 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
  ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
+<?php 
+      $user_id = $_SESSION['login_id']; 
+?>
 
 <div class="">
   <div class="row">
@@ -42,21 +45,26 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
   <div class="card-header">
     <h3 style="color:#3c3838; text-align: center;">Prison Health Card</h3>
 </div>
-    <div class="card-body">
-    <div class="row">
-        <div class="col-md-5">
-            <div class="row">
-                <div class="col-md-12">
-                    <h5 style="color:#3c3838; text-align: center;">Demographics</h5>
-                    <hr>
-                </div>
-                <div class="col-md-6">
-                    <b>Prisoner Name</b>:
-                </div>
+<div class="card-body">
+  <div class="row">
+    <div class="col-md-5">
+      <div class="row">
+        <div class="col-md-12">
+          <h5 style="color:#3c3838; text-align: center;">
+            Demographics
+            <button type="button" id="editDemoBtn" class="btn btn-primary btn-sm float-end" title="Edit prisoner information">
+              <i class="fa fa-edit fa-fw"> </i>
+            </button>
+          </h5>
+          <hr>
+        </div>
+        <div class="col-md-6">
+          <b>Prisoner Name</b>:
+        </div>
                 <div class="col-md-6" id="prisoner_name">
                 </div>
                 <div class="col-md-6">
-                    <b>Address</b>:
+                    <b>Residential address</b>:
                 </div>
                 <div class="col-md-6" id="address">
                 </div>
@@ -108,19 +116,36 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
         <div class="col-md-3">
             <div class="row">
                 <div class="col-md-12">
-                    <h5 style="color:#3c3838; text-align: center;">Clinical outcomes</h5>
-                    <hr>
+                  <h5 style="color:#3c3838; text-align: center;">Clinical outcomes 
+                    <button type="button" id="updateOutcomeBtn" class="btn btn-primary btn-sm float-end" title="Update outcome">
+                      <i class="fa fa-edit fa-fw"> </i> Update
+                    </button>
+                  </h5>
+                  <hr>
                 </div>
-                <div class="col-md-6">
-                    <b>Outcome</b>:
+                <form action="" id="outcome-form">
+                <input type="hidden" name="prisoners_no" id="outcome_prisoner_id" value="">
+                <input type="hidden" name="updated_by" value="">
+                <input type="hidden" name="updated_by" value="<?php echo isset($user_id) ? $user_id : '' ?>">
+                <div class="form-group row">
+                  <label for="outcome" class="col-md-6 col-form-label"><b>Outcome</b>:</label>
+                  <div class="col-md-6">
+                    <select class="form-control select2" name="outcome" id="outcome" required>
+                      <option value="Released">Released</option>
+                      <option value="Transfered">Transfered</option>
+                      <option value="Died">Died</option>
+                      <option value="Escaped">Escaped</option>
+                    </select>
+                  </div>
                 </div>
-                <div class="col-md-6" id="outcome">
+                <div class="form-group row">
+                  <label for="outcome" class="col-md-6 col-form-label"><b>Outcome date</b>:</label>
+                  <div class="col-md-6">
+                    <input type="date" name="outcome_date" id="outcome_date" class="form-control" value="">
+                  </div>
                 </div>
-                <div class="col-md-6">
-                    <b>Outcome Date</b>:
-                </div>
-                <div class="col-md-6" id="outcome_date">
-                </div></div>
+              </form>
+              </div>
                 <div class="row">
                 <div class="col-md-12">
                 <hr>
@@ -152,7 +177,7 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
       <div class="card">
         <div class="card-header">
             Clinical History at Entry
-            <button type="button" id="editHxBtn" class="btn btn-primary btn-sm float-end">
+            <button type="button" id="editHxBtn" class="btn btn-primary btn-sm float-end" title="Edit clinical history at entry">
               <i class="fa fa-edit fa-fw"> </i>
             </button>
         </div>
@@ -205,7 +230,7 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
       <div class="card">
         <div class="card-header">
             Vitals
-            <button type="button" class="btn btn-primary btn-sm float-end" style="align: left;" data-bs-toggle="modal" data-bs-target="#vitalsModal">
+            <button type="button" class="btn btn-primary btn-sm float-end add-obs-modal" style="align: left;" data-bs-toggle="modal" data-bs-target="#vitalsModal">
               <i class="fa fa-plus fa-fw"> </i>
             </button>
         </div>
@@ -220,7 +245,7 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
       <div class="card">
         <div class="card-header">
           HIV Testing Service
-          <button type="button" class="btn btn-primary btn-sm float-end" id="htsModalTrigger" data-bs-toggle="modal" data-bs-target="#htsModal">
+          <button type="button" class="btn btn-primary btn-sm float-end add-obs-modal" id="htsModalTrigger" data-bs-toggle="modal" data-bs-target="#htsModal">
             <i class="fa fa-plus fa-fw"> </i>
           </button>
         </div>
@@ -237,7 +262,7 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
       <div class="card">
       <div class="card-header">
             TB Service
-            <button type="button" class="btn btn-primary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#tbModal">
+            <button type="button" class="btn btn-primary btn-sm float-end add-obs-modal" data-bs-toggle="modal" data-bs-target="#tbModal">
               <i class="fa fa-plus fa-fw"> </i>
             </button>
         </div>
@@ -252,7 +277,7 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
       <div class="card">
         <div class="card-header">
             STI Service
-            <button type="button" class="btn btn-primary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#STIModal">
+            <button type="button" class="btn btn-primary btn-sm float-end add-obs-modal" data-bs-toggle="modal" data-bs-target="#STIModal">
               <i class="fa fa-plus fa-fw"> </i>
             </button>
         </div>
@@ -269,7 +294,7 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
       <div class="card">
       <div class="card-header">
             COVID Service
-            <button type="button" class="btn btn-primary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#covidModal">
+            <button type="button" class="btn btn-primary btn-sm float-end add-obs-modal" data-bs-toggle="modal" data-bs-target="#covidModal">
               <i class="fa fa-plus fa-fw"> </i>
             </button>
         </div>
@@ -284,7 +309,7 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
       <div class="card">
         <div class="card-header">
             Clinical Referal
-            <button type="button" class="btn btn-primary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#referalModal">
+            <button type="button" class="btn btn-primary btn-sm float-end add-obs-modal" data-bs-toggle="modal" data-bs-target="#referalModal">
               <i class="fa fa-plus fa-fw"> </i>
             </button>
         </div>
@@ -388,8 +413,8 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
 <script language="JavaScript">
 
 $(document).ready(function() {
-  var urlParams = new URLSearchParams(window.location.search);
-  var prisoner_id = urlParams.get('pid');
+  // var urlParams = new URLSearchParams(window.location.search);
+  // var prisoner_id = urlParams.get('pid');
   getPrisoner();
   $("#prev_pos_info").hide();
   getARTatEntry();
@@ -399,17 +424,15 @@ $(document).ready(function() {
   getSTIObs();
   getCOVIDObs();
   getReferalObs();
-  // $("#htsModalTrigger").click(function(){
-  //   console.log("Hello");
-  // });
+  getOutcomes();
   $('#htsModal, #tbModal, #vitalsModal, #STIModal, #covidModal, #referalModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget); // Button that triggered the modal
     var id = button.data('id');
-    
+    var prisoner_id = button.data('pid');
     var modalID = $(this).attr('id');
+
     if(modalID == "htsModal"){
       $("#hts_prisoner_id").val(prisoner_id);
-      console.log(id);
       loadHTSTestTypes();
       if(typeof id !== "undefined"){
         $.ajax({
@@ -418,9 +441,8 @@ $(document).ready(function() {
           data: { get: 'hiv_testing', id: id},
           dataType: "json",
         }).done(function(result) {
-          console.log(id);
           $("#hiv-id").val(id);
-          $('#visit_date').val(result[0].visit_date);
+          $('#hts_visit_date').val(result[0].visit_date);
           $('input[name="resident_status"]').each(function() {
             if ($(this).val() === result[0].resident_status) {
               $(this).prop('checked', true);
@@ -435,23 +457,50 @@ $(document).ready(function() {
             $("#hiv_test_neg, #hiv_test_pos, #hiv_test_inc, #hiv_test_ref, #hiv_test_unk, #hts-test-type").removeAttr("disabled");
             $('#hts-test-type').val(result[0].type_of_test);
             $('input[name="hiv_test"]').each(function() {
-            if ($(this).val() === result[0].HIV_test) {
-              $(this).prop('checked', true);
-            }
-          });
+              if ($(this).val() === result[0].HIV_test) {
+                $(this).prop('checked', true);
+              }
+            });
           }
           $('#appoitment_date').val(result[0].app_date);
           $('#hts-comment').text(result[0].comment);
         });
       }
     }else if(modalID == "tbModal"){
-      $("#tb_prisoner_id").val(prisoner_id);
       loadTBTestTypes();
+      $("#tb_prisoner_id").val(prisoner_id);
+      if(typeof id !== "undefined"){
+        $.ajax({
+          type: "POST",
+          url: 'ajax.php?action=fetch',
+          data: { get: 'tb_service', id: id},
+          dataType: "json",
+        }).done(function(result) {
+          $("#tb-id").val(id);
+          $('#tb_visit_date').val(result[0].visit_date);
+          $('input[name="resident_status"]').each(function() {
+            if ($(this).val() === result[0].resident_status) {
+              $(this).prop('checked', true);
+            }
+          });
+          $('input[name="tb_screening"]').each(function() {
+            if ($(this).val() === result[0].tb_screening) {
+              $(this).prop('checked', true);
+            }
+          });
+          $('input[name="test_criteria"]').each(function() {
+            if ($(this).val() === result[0].test_criteria) {
+              $(this).prop('checked', true);
+            }
+          });
+          $('#appoitment_date').val(result[0].app_date);
+          $('#hts-comment').text(result[0].comment);
+        });
+      }
     }else if(modalID == "vitalsModal"){
-      $("#vitals_prisoner_id").val(prisoner_id);
+      $("#prisoner_id").val(prisoner_id);
       $("#id").val(id);
       if(typeof id !== "undefined"){
-        console.log(id)
         $.ajax({
           type: "POST",
           url: 'ajax.php?action=fetch',
@@ -468,10 +517,10 @@ $(document).ready(function() {
           $('#comment').val(result[0].comment);
           $('#bmi_muac').val(result[0].bmi_muac);
           $('input[name="resident_status"]').each(function() {
-              if ($(this).val() === result[0].resident_status) {
-                $(this).prop('checked', true);
-              }
-            });
+            if ($(this).val() === result[0].resident_status) {
+              $(this).prop('checked', true);
+            }
+          });
         });
       }
     }else if(modalID == "STIModal"){
@@ -481,26 +530,87 @@ $(document).ready(function() {
       loadSTITestTypes();
       $("#covid_prisoner_id").val(prisoner_id);
     }else if(modalID == "referalModal"){
-      loadFacilities();
       $("#referal_prisoner_id").val(prisoner_id);
+      loadFacilities().done(function(){
+        console.log("AM HERE")
+      if(typeof id !== "undefined"){
+        $.ajax({
+          type: "POST",
+          url: 'ajax.php?action=fetch',
+          data: { get: 'clinic_referal', id: id},
+          dataType: "json",
+        }).done(function(result) {
+          $("#clinical-ref-id").val(id);
+          $('#clinic_ref_visit_date').val(result[0].visit_date);
+          $('input[name="resident_status"]').each(function() {
+            if ($(this).val() === result[0].resident_status) {
+              $(this).prop('checked', true);
+            }
+          });
+          $('input[name="clinical_referral"]').each(function() {
+            if ($(this).val() === result[0].clinical_referral) {
+              $(this).prop('checked', true);
+            }
+          });
+          console.log(result[0])
+          $('#hospital_name').val(result[0].hospital_name).trigger('change');
+          $('#appoitment_date').val(result[0].app_date);
+          $('#hts-comment').text(result[0].comment);
+        });
+      }
+    });
     }
   });
   $('#htsModal, #tbModal, #vitalsModal, #STIModal, #covidModal, #referalModal').on('hide.bs.modal', function (event) {
-    console.log("Hellow");
     clearFormInputs();
   });
 
-  // Show confirmation modal when delete button is clicked
-  $("#deleteButton").click(function() {
-    console.log('Here')
-    $('#deleteConfirmationModal').modal('show');
-  });
+  $('#deleteConfirmationModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var id = button.data('id');
+    var encounter = button.data('encounter');
+    var prisoners_no = button.data('pid');
 
-  // Handle delete action when confirmed
-  $('#confirmDeleteButton').click(function() {
-      // Perform deletion logic here (e.g., send AJAX request to delete record)
-      console.log('Record deleted!'); // Replace with actual delete logic
-      $('#deleteConfirmationModal').modal('hide');
+    $('#confirmDeleteButton').on('click',function() {
+      start_load();
+      $.ajax({
+        type: "POST",
+        url: 'ajax.php?action=void_obs',
+        data: {
+          id: id,
+          encounter: encounter,
+          prisoners_no: prisoners_no,
+          user: '<?php echo $_SESSION['login_id']; ?>'
+        },
+        dataType: "json",
+      }).done(function(result) {
+        if (result == 1) {
+          alert_toast('Record successfully deleted!', "error");
+          if(encounter == "vitals"){
+            getVitals();
+          }
+          if(encounter == "hiv_test"){
+            getHTS();
+          } 
+          if(encounter == "stis_service"){
+            getSTIObs();
+          } 
+          if(encounter == "covid19"){
+            getCOVIDObs();
+          }
+          if(encounter == "clinical_referral"){
+            getReferalObs();
+          }
+          if(encounter == "tb_test"){
+            getTBObs();
+          }
+          setTimeout(function() {
+            $('#deleteConfirmationModal').modal('hide');
+            $("#preloader2").hide();
+          }, 2000)
+        }
+      });
+    });
   });
 
 $('#editHxBtn').click(function() {
@@ -511,34 +621,89 @@ $('#editHxBtn').click(function() {
   location.href = "?page=ART_history_at_entry&pid="+pid+"&id="+id;
 });
 
+$('#editDemoBtn').click(function() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var pid = urlParams.get('pid'); 
+
+  location.href = "?page=basic_particulars&pid="+pid;
+});
+
+$(document).on('click', '#updateOutcomeBtn', function() {
+  // Change the button's icon, text, class, and title
+  $(this).html('<i class="fa fa-save fa-fw"></i> Save')
+    .removeClass('btn-primary')
+    .addClass('btn-success')
+    .attr('title', 'Save outcome')
+    .attr('id', 'saveOutcomeBtn')
+    .attr('form', 'outcome-form');
+
+    $('#outcome_date').removeAttr('disabled');
+    $('#outcome').removeAttr('disabled');
+  });
+
+  // Handle the click event for the dynamically created saveOutcomeBtn button
+  $(document).on('click', '#saveOutcomeBtn', function() {
+    // Change the button's icon, text, class, and title
+    $(this).html('<i class="fa fa-edit fa-fw"></i> Update')
+      .removeClass('btn-success')
+      .addClass('btn-primary')
+      .attr('title', 'Update outcome')
+      .attr('id', 'updateOutcomeBtn')
+      .removeAttr('form');
+
+      $.ajax({
+        url:'ajax.php?action=update_outcome',
+        data: new FormData($('#outcome-form')[0]),
+        cache: false,
+        contentType: false,
+        processData: false,
+        method: 'POST',
+        type: 'POST',
+        success:function(resp){
+          if(resp == 1){
+            alert_toast('Data successfully saved',"success");
+            $('#outcome_date').attr('disabled','disabled');
+            $('#outcome').attr('disabled','disabled');
+            // getSTIObs();
+            // setTimeout(function() {
+            //   $('#STIModal').modal('hide');
+            //   $("#preloader2").hide();
+            // },2000)
+          }
+        }
+      })
+  });
+
   $('#finish').on('click', function() {
     window.history.back();
   });
 });
 
 function loadFacilities() {
-  $.ajax({
+  return $.ajax({
     type: "POST",
     url: 'ajax.php?action=metadata',
     data: { get: 'facilities' }, // Send data as an object
     dataType: "json",
-  }).done(function(result) {
-    $("#hospital_name").empty();
-
-    // Add a placeholder option
-    $("#hospital_name").append($('<option>', {
-        value: '',
-        text: 'Select facility',
-        selected: true,
-        disabled: true // Disable the placeholder option
-    }));
-    $.each(result, function(index, item) {
-      $("#hospital_name").append($('<option>', {
-        value: item.name,
-        text: item.name
-      }));
-    });
-  });
+    success: function(result) {
+      $("#hospital_name").empty();
+      // Add a placeholder option
+      $("#hospital_name").append($('<option>', 
+        {
+          value: '',
+          text: 'Select facility',
+          selected: true,
+          disabled: true // Disable the placeholder option
+        })
+      );
+      $.each(result, function(index, item) {
+        $("#hospital_name").append($('<option>', {
+          value: item.name,
+          text: item.name
+        }));
+      });
+  }
+});
 }
 
 function loadSTITestTypes() {
@@ -572,10 +737,10 @@ function loadHTSTestTypes() {
     data: { get: 'hts_test_types' }, // Send data as an object
     dataType: "json",
   }).done(function(result) {
-    $("#type_of_test").empty();
+    $("#hts-test-type").empty();
 
     // Add a placeholder option
-    $("#type_of_test").append($('<option>', {
+    $("#hts-test-type").append($('<option>', {
         value: '',
         text: 'Select type of test',
         selected: true,
@@ -601,12 +766,20 @@ function getPrisoner() {
         }).done(function(result) {
             $("#prisoner_name").text(result[0].fname+" "+result[0].lname+" ("+result[0].alias+")");
             $("#prisoner_num").text(result[0].prisoners_no);
+            $("#outcome_prisoner_id").val(result[0].id);
             $("#sex").text(result[0].gender);
             $("#dob").text(result[0].dob);
             $("#next_of_kin").text(result[0].next_of_kin_contact);
             $("#cell_num").text(result[0].cell);
             $("#entry_s").text(result[0].status);
             $("#entry_d").text(result[0].entry_date);
+            $("#address").text(result[0].home_village+" / "+result[0].home_ta+" / "+result[0].home_district);
+            $('.add-obs-modal').each(function() {
+              var pid = $(this).data('pid');
+              if (pid === undefined) {
+                $(this).attr('data-pid', result[0].id);
+              }
+            });
         });
     }
 
@@ -656,7 +829,7 @@ function getPrisoner() {
         });
     }
 
-function getVitals(id) {
+function getVitals() {
     var urlParams = new URLSearchParams(window.location.search);
     var pid = urlParams.get('pid');
 
@@ -674,15 +847,17 @@ function getVitals(id) {
         listHtml += '</button><br>';
         listHtml += '<div class="collapse" id="collapse-' + obj.id + '">';
         listHtml += '<div class="card card-body">';
-        listHtml += '<p><strong>Temperature:</strong> ' + obj.temperature + '</p>';
-        listHtml += '<p><strong>Height:</strong> ' + obj.height + '</p>';
-        listHtml += '<p><strong>Weight:</strong> ' + obj.weight + '</p>';
-        listHtml += '<p><strong>BMI:</strong> ' + obj.bmi_muac + '</p>';
-        listHtml += '<p><strong>BP:</strong> ' + obj.systolic + '/' + obj.diastolic +'</p>';
+        listHtml += obj.temperature !== null ? '<p><strong>Temperature:</strong> ' + obj.temperature + '</p>' : '';
+        listHtml += obj.height !== null ? '<p><strong>Height:</strong> ' + obj.height + '</p>': '';
+        listHtml += obj.weight !== null ? '<p><strong>Weight:</strong> ' + obj.weight + '</p>' : '';
+        listHtml += obj.bmi_muac !== null ? '<p><strong>BMI:</strong> ' + obj.bmi_muac + '</p>' : '';
+        listHtml += (obj.systolic !== null && obj.diastolic !== null) ?'<p><strong>BP:</strong> ' + obj.systolic + '/' + obj.diastolic +'</p>' : '';
+        listHtml += obj.comment !== null ? '<p><strong>BMI:</strong> ' + obj.comment + '</p>' : '';
         listHtml += '</div>';
         listHtml += '<div class="card-footer">';
-        listHtml += '<button class="btn btn-sm btn-danger delete-btn" id="deleteButton" data-id="' + obj.id + '"><i class="fas fa-trash"></i> Delete</button>';
-        listHtml += '<button class="btn btn-sm btn-primary edit-btn float-right"  data-bs-toggle="modal" data-bs-target="#vitalsModal"';
+        listHtml += '<button class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" ';
+        listHtml += 'data-encounter="vitals" data-pid="'+ obj.prisoners_no +'" data-id="' + obj.id + '"><i class="fas fa-trash"></i> Delete</button>';
+        listHtml += '<button class="btn btn-sm btn-primary edit-btn float-right" data-pid="'+ obj.prisoners_no +'" data-bs-toggle="modal" data-bs-target="#vitalsModal"';
         listHtml += 'data-id="' + obj.id + '"><i class="fas fa-edit"></i> Edit</button>';
         listHtml += '</div>'
         listHtml += '</div>';
@@ -716,8 +891,9 @@ function getHTS() {
         listHtml += '<p><strong>Comment:</strong> ' + obj.comment +'</p>';
         listHtml += '</div>';
         listHtml += '<div class="card-footer">';
-        listHtml += '<button class="btn btn-sm btn-danger delete-btn" data-id="' + obj.id + '"><i class="fas fa-trash"></i> Delete</button>';
-        listHtml += '<button class="btn btn-sm btn-primary edit-btn float-right"  data-bs-toggle="modal" data-bs-target="#htsModal"';
+        listHtml += '<button class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" ';
+        listHtml += 'data-encounter="hiv_test" data-pid="'+ obj.prisoners_no +'" data-id="' + obj.id + '"><i class="fas fa-trash"></i> Delete</button>';
+        listHtml += '<button class="btn btn-sm btn-primary edit-btn float-right" data-pid="'+ obj.prisoners_no +'" data-bs-toggle="modal" data-bs-target="#htsModal"';
         listHtml += 'data-id="' + obj.id + '"><i class="fas fa-edit"></i> Edit</button>';
         listHtml += '</div>'
         listHtml += '</div>';
@@ -733,7 +909,7 @@ function getSTIObs() {
     $.ajax({
       type: "POST",
       url: 'ajax.php?action=fetch',
-      data: { get: 'sti_service', id:  id},
+      data: { get: 'sti_service', pid:  id},
       dataType: "json",
     }).done(function(result) {
       var dataArray = result;
@@ -744,12 +920,18 @@ function getSTIObs() {
         listHtml += '</button><br>';
         listHtml += '<div class="collapse" id="sti-' + obj.id + '">';
         listHtml += '<div class="card card-body">';
-        listHtml += '<p><strong>STI Screening:</strong> ' + obj.sti_screening + '</p>';
-        listHtml += '<p><strong>STI Test:</strong> ' + obj.sti_test + '</p>';
-        listHtml += '<p><strong>Type of Test:</strong> ' + obj.type_of_test + '</p>';
+        listHtml += obj.sti_screening !== null ? '<p><strong>STI Screening:</strong> ' + obj.sti_screening + '</p>' : '';
+        listHtml += obj.sti_test !== null ? '<p><strong>STI Test:</strong> ' + obj.sti_test + '</p>' : '';
+        listHtml += obj.type_of_test !== null ? '<p><strong>Type of Test:</strong> ' + obj.type_of_test + '</p>' : '';
         listHtml += '<p><strong>Appointment Date:</strong> ' + obj.app_date + '</p>';
         listHtml += '<p><strong>Comment:</strong> ' + obj.comment +'</p>';
         listHtml += '</div>';
+        listHtml += '<div class="card-footer">';
+        listHtml += '<button class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" ';
+        listHtml += 'data-encounter="stis_service" data-pid="'+ obj.prisoners_no +'" data-id="' + obj.id + '"><i class="fas fa-trash"></i> Delete</button>';
+        listHtml += '<button class="btn btn-sm btn-primary edit-btn float-right" data-pid="'+ obj.prisoners_no +'" data-bs-toggle="modal" data-bs-target="#stiModal"';
+        listHtml += 'data-id="' + obj.id + '"><i class="fas fa-edit"></i> Edit</button>';
+        listHtml += '</div>'
         listHtml += '</div>';
     });
 
@@ -764,7 +946,7 @@ function getCOVIDObs() {
     $.ajax({
       type: "POST",
       url: 'ajax.php?action=fetch',
-      data: { get: 'covid_service', id:  id},
+      data: { get: 'covid_service', pid:  id},
       dataType: "json",
     }).done(function(result) {
       var dataArray = result;
@@ -776,11 +958,17 @@ function getCOVIDObs() {
         listHtml += '<div class="collapse" id="covid-' + obj.id + '">';
         listHtml += '<div class="card card-body">';
         listHtml += '<p><strong>COVID19 Screening:</strong> ' + obj.covid19_screening + '</p>';
-        listHtml += '<p><strong>COVID19 Test:</strong> ' + obj.covid19_test + '</p>';
-        listHtml += '<p><strong>Type of Test:</strong> ' + obj.type_of_test + '</p>';
+        listHtml += obj.covid19_test !== null ? '<p><strong>COVID19 Test:</strong> ' + obj.covid19_test + '</p>' : '';
+        listHtml += obj.type_of_test !== null ? '<p><strong>Type of Test:</strong> ' + obj.type_of_test + '</p>': '';
         listHtml += '<p><strong>Appointment Date:</strong> ' + obj.app_date + '</p>';
         listHtml += '<p><strong>Comment:</strong> ' + obj.comment +'</p>';
         listHtml += '</div>';
+        listHtml += '<div class="card-footer">';
+        listHtml += '<button class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" ';
+        listHtml += 'data-encounter="covid19" data-pid="'+ obj.prisoners_no +'" data-id="' + obj.id + '"><i class="fas fa-trash"></i> Delete</button>';
+        listHtml += '<button class="btn btn-sm btn-primary edit-btn float-right" data-pid="'+ obj.prisoners_no +'" data-bs-toggle="modal" data-bs-target="#covidModal"';
+        listHtml += 'data-id="' + obj.id + '"><i class="fas fa-edit"></i> Edit</button>';
+        listHtml += '</div>'
         listHtml += '</div>';
     });
 
@@ -795,7 +983,7 @@ function getReferalObs() {
     $.ajax({
       type: "POST",
       url: 'ajax.php?action=fetch',
-      data: { get: 'clinic_referal', id:  id},
+      data: { get: 'clinic_referal', pid:  id},
       dataType: "json",
     }).done(function(result) {
       var dataArray = result;
@@ -807,17 +995,16 @@ function getReferalObs() {
         listHtml += '<div class="collapse" id="referal-' + obj.id + '">';
         listHtml += '<div class="card card-body">';
         listHtml += '<p><strong>Clinic Referal:</strong> ' + obj.clinical_referral + '</p>';
-        listHtml += '<p><strong>Referred facility:</strong> ' + obj.hospital_name + '</p>';
-        listHtml += '<p><strong>Outcome:</strong> ' + obj.outcome + '</p>';
-        listHtml += '<p><strong>Outcome Date:</strong> ' + obj.outcome_date + '</p>';
+        listHtml += obj.hospital_name !== null ? '<p><strong>Referred facility:</strong> ' + obj.hospital_name + '</p>' : '';
         listHtml += '<p><strong>Comment:</strong> ' + obj.comment +'</p>';
         listHtml += '</div>';
+        listHtml += '<div class="card-footer">';
+        listHtml += '<button class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" ';
+        listHtml += 'data-encounter="clinical_referral" data-pid="'+ obj.prisoners_no +'" data-id="' + obj.id + '"><i class="fas fa-trash"></i> Delete</button>';
+        listHtml += '<button class="btn btn-sm btn-primary edit-btn float-right" data-pid="'+ obj.prisoners_no +'" data-bs-toggle="modal" data-bs-target="#referalModal"';
+        listHtml += 'data-id="' + obj.id + '"><i class="fas fa-edit"></i> Edit</button>';
+        listHtml += '</div>'
         listHtml += '</div>';
-
-        if (index === dataArray.length - 1) {
-          $("#outcome").text(obj.outcome);
-          $("#outcome_date").text(obj.outcome_date);
-        }
     });
 
     $('#referalList').html(listHtml);
@@ -831,7 +1018,7 @@ function getTBObs() {
     $.ajax({
       type: "POST",
       url: 'ajax.php?action=fetch',
-      data: { get: 'tb_service', id:  id},
+      data: { get: 'tb_service', pid:  id},
       dataType: "json",
     }).done(function(result) {
       var dataArray = result;
@@ -843,18 +1030,46 @@ function getTBObs() {
         listHtml += '<div class="collapse" id="tb-' + obj.id + '">';
         listHtml += '<div class="card card-body">';
         listHtml += '<p><strong>TB Screening:</strong> ' + obj.tb_screening + '</p>';
-        listHtml += '<p><strong>Test Criteria:</strong> ' + obj.test_criteria + '</p>';
-        listHtml += '<p><strong>HIV Test:</strong> ' + obj.tb_test + '</p>';
-        listHtml += '<p><strong>Type of Test:</strong> ' + obj.type_of_test + '</p>';
-        listHtml += '<p><strong>Appointment Date:</strong> ' + obj.app_date + '</p>';
-        listHtml += '<p><strong>Comment:</strong> ' + obj.comment +'</p>';
+        listHtml += obj.test_criteria !== null ? '<p><strong>Test Criteria:</strong> ' + obj.test_criteria + '</p>' : '';
+        listHtml += obj.tb_test !== null ? '<p><strong>HIV Test:</strong> ' + obj.tb_test + '</p>' : '';
+        listHtml += obj.type_of_test !== null ? '<p><strong>Type of Test:</strong> ' + obj.type_of_test + '</p>' : '';
+        listHtml += obj.app_date !== null ? '<p><strong>Appointment Date:</strong> ' + obj.app_date + '</p>' : '';
+        listHtml += obj.comment !== null ? '<p><strong>Comment:</strong> ' + obj.comment + '</p>' : '';
         listHtml += '</div>';
+        listHtml += '<div class="card-footer">';
+        listHtml += '<button class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" ';
+        listHtml += 'data-encounter="tb_test" data-pid="'+ obj.prisoners_no +'" data-id="' + obj.id + '"><i class="fas fa-trash"></i> Delete</button>';
+        listHtml += '<button class="btn btn-sm btn-primary edit-btn float-right" data-pid="'+ obj.prisoners_no +'" data-bs-toggle="modal" data-bs-target="#tbModal"';
+        listHtml += 'data-id="' + obj.id + '"><i class="fas fa-edit"></i> Edit</button>';
+        listHtml += '</div>'
         listHtml += '</div>';
     });
 
     $('#tbList').html(listHtml);
     });
 }
+
+function getOutcomes() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var id = urlParams.get('pid');
+
+    $.ajax({
+      type: "POST",
+      url: 'ajax.php?action=fetch',
+      data: { get: 'outcomes', pid:  id},
+      dataType: "json",
+    }).done(function(result) {
+      if (Array.isArray(result)) {
+        if (result.length > 0) {
+          $("#outcome_date").val(result[0].outcome_date);
+          $("#outcome").val(result[0].outcome);
+          $('#outcome').trigger('change');
+        }
+      }
+      $('#outcome_date').attr('disabled','disabled');
+      $('#outcome').attr('disabled','disabled');
+    });
+  }
 
 function clearFormInputs() {
         $('Form :input').each(function() {
@@ -908,7 +1123,7 @@ $(function() {
                         <?php 
       $regions_id = $_SESSION['login_regions_id'];
       $stations_id = $_SESSION['login_stations_id'];
-      $user_id = $_SESSION['login_id']; 
+      $user_id = $_SESSION['login_id'];
 ?>
 
                         <input type="hidden" name="regions_id" id="regions_id"

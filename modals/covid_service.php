@@ -102,8 +102,6 @@ window.onresize = function(event) {
 </script>
 
 <?php 
-      $regions_id = $_SESSION['login_regions_id'];
-      $stations_id = $_SESSION['login_stations_id'];
       $user_id = $_SESSION['login_id']; 
 ?>
 
@@ -114,8 +112,6 @@ window.onresize = function(event) {
       <div class="modal-body row col-md-12">
       <form action="" id="covid-form">
         <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
-        <input type="hidden" name="regions_id" id="regions_id" value="<?php echo isset($regions_id) ? $regions_id : '' ?>">
-        <input type="hidden" name="stations_id" id="stations_id" value="<?php echo isset($stations_id) ? $stations_id : '' ?>">
         <input type="hidden" name="prisoners_no" id="covid_prisoner_id" value="<?php echo isset($prisoners_no) ? $prisoners_no : '' ?>">
 
         <div class="form-group row">
@@ -142,7 +138,7 @@ window.onresize = function(event) {
           </div>
         </div>
         <div class="form-group row">
-          <label for="sti_screening" class="col-md-5 col-form-label">COVID 19 Screening</label>
+          <label for="covid19_screening" class="col-md-5 col-form-label">COVID 19 Screening</label>
           <div class="col-md-7">
             <div class="form-check form-check-inline">
               <input class="form-check-input vericaltext" type="radio" name="covid19_screening" id="covid19_screening_not_pre" <?php if (isset($covid19_screening) && $covid19_screening=="Not Presumptive") echo "checked";?> value="Not Presumptive" required>
@@ -162,11 +158,11 @@ window.onresize = function(event) {
           <label for="type_of_test" class="col-md-5 col-form-label">Type of Test</label>
           <div class="col-md-7">
             <div class="form-check form-check-inline">
-              <input class="form-check-input vericaltext" type="radio" name="type_of_test" id="type_of_test_new" <?php if (isset($type_of_test) && $type_of_test=="New Test") echo "checked";?> value="New Test" required>
+              <input class="form-check-input vericaltext" type="radio" name="type_of_test" id="type_of_test_new" <?php if (isset($type_of_test) && $type_of_test=="New Test") echo "checked";?> value="New Test">
               <label class="form-check-label" for="type_of_test_new">New Test</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="type_of_test" id="type_of_test_retest" <?php if (isset($type_of_test) && $type_of_test=="Re-Test") echo "checked";?> value="Re-Test" required>
+              <input class="form-check-input" type="radio" name="type_of_test" id="type_of_test_retest" <?php if (isset($type_of_test) && $type_of_test=="Re-Test") echo "checked";?> value="Re-Test">
               <label class="form-check-label" for="type_of_test_retest">Re-Test</label>
             </div>
           </div>
@@ -175,15 +171,15 @@ window.onresize = function(event) {
           <label for="covid19_test" class="col-md-5 col-form-label">COVID19 Testing</label>
           <div class="col-md-7">
             <div class="form-check form-check-inline">
-              <input class="form-check-input vericaltext" type="radio" name="covid19_test" id="covid19_test_neg" <?php if (isset($covid19_test) && $covid19_test=="Negative") echo "checked";?> value="Negative" required>
+              <input class="form-check-input vericaltext" type="radio" name="covid19_test" id="covid19_test_neg" <?php if (isset($covid19_test) && $covid19_test=="Negative") echo "checked";?> value="Negative">
               <label class="form-check-label" for="covid19_test_neg">Negative</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="covid19_test" id="covid19_test_pos" <?php if (isset($covid19_test) && $covid19_test=="Positive") echo "checked";?> value="Positive" required>
+              <input class="form-check-input" type="radio" name="covid19_test" id="covid19_test_pos" <?php if (isset($covid19_test) && $covid19_test=="Positive") echo "checked";?> value="Positive">
               <label class="form-check-label" for="covid19_test_pos">Positive</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="covid19_test" id="covid19_test_unk" <?php if (isset($covid19_test) && $covid19_test=="Not Done") echo "checked";?> value="Not Done" required>
+              <input class="form-check-input" type="radio" name="covid19_test" id="covid19_test_unk" <?php if (isset($covid19_test) && $covid19_test=="Not Done") echo "checked";?> value="Not Done">
               <label class="form-check-label" for="covid19_test_unk">Unknown</label>
             </div>
           </div>
@@ -197,7 +193,7 @@ window.onresize = function(event) {
         <div class="form-group row">
           <label for="comment" class="col-md-5 col-form-label">Comment</label>
           <div class="col-md-7">
-            <textarea name="comment" class="form-control" id="comment" row="3" required>
+            <textarea name="comment" class="form-control" id="comment" row="3">
               <?php echo isset($comment) ? $comment : '' ?>
             </textarea>
           </div>
@@ -214,6 +210,16 @@ window.onresize = function(event) {
 </div>
 
 <script>
+  $(function () {
+    $("input[name='covid19_screening']").click(function () {
+      if ($("#covid19_screening_nd, #covid19_screening_not_pre").is(":checked")) {
+        $("#type_of_test_new, #type_of_test_retest, #covid19_test_neg, #covid19_test_pos, #covid19_test_unk").attr("disabled", "disabled");
+      }else if ($("#covid19_screening_pre").is(":checked")){
+        $("#type_of_test_new, #type_of_test_retest, #covid19_test_neg, #covid19_test_pos, #covid19_test_unk").removeAttr("disabled");
+      }
+    });
+  });
+
   $('#covid-form').submit(function(e){
     e.preventDefault()
     start_load()
@@ -230,7 +236,7 @@ window.onresize = function(event) {
           alert_toast('Data successfully saved',"success");
           getCOVIDObs();
           setTimeout(function() {
-            $('#STIModal').modal('hide');
+            $('#covidModal').modal('hide');
             $("#preloader2").hide();
           },2000)
         }

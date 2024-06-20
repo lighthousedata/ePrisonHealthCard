@@ -1,16 +1,9 @@
 <aside class="main-sidebar sidebar-light-secondary elevation-4">
   <div class="dropdown">
    	<a href="./" class="brand-link">
-        <?php if($_SESSION['login_type'] == 1): ?>
-      <p style="text-align: center;" class="logo-border1">
-        <img src="assets/uploads/logo.png" alt="Avatar" class="brand_logo1" style="border-radius: 50%;">
-      </p>
-        <?php else: ?>
-       <!-- <h3 class="text-center p-0 m-0"><b>USER</b></h3>-->
        <p style="text-align: center;" class="logo-border1">
          <img src="assets/uploads/logo.jpeg" alt="Avatar" class="brand_logo1" style="border-radius: 50%; text-align: center;">
        </p>
-        <?php endif; ?>
     </a>
     <br><br><br><br>
     <div class="sidebar pb-4 mb-4">
@@ -25,7 +18,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="?page=patient_lookup" class="nav-link">
+            <a href="?page=patient_lookup" class="nav-link nav-patient_lookup">
               <i class="fas fa-users nav-icon" style="color:#3c8dbc;"></i>
               <p>
                People
@@ -102,6 +95,8 @@
   		var s = '<?php echo isset($_GET['s']) ? $_GET['s'] : '' ?>';
       if(s!='')
         page = page+'_'+s;
+
+      console.log($('.nav-link.nav-'+page).length);
   		if($('.nav-link.nav-'+page).length > 0){
              $('.nav-link.nav-'+page).addClass('active')
   			if($('.nav-link.nav-'+page).hasClass('tree-item') == true){
@@ -112,7 +107,9 @@
           $('.nav-link.nav-'+page).parent().addClass('menu-open')
         }
 
-  		}
+  		}else{
+        $('.nav-link.nav-'+page).parent().addClass('active');
+      }
      
   	})
   </script>

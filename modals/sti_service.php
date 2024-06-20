@@ -81,8 +81,6 @@ transform: rotate(360deg);
 </style>
 
 <?php 
-      $regions_id = $_SESSION['login_regions_id'];
-      $stations_id = $_SESSION['login_stations_id'];
       $user_id = $_SESSION['login_id']; 
 ?>
 
@@ -92,10 +90,8 @@ transform: rotate(360deg);
       </div>
       <div class="modal-body row col-md-12">
       <form action="" id="sti-form">
-      <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
- <input type="hidden" name="regions_id" id="regions_id" value="<?php echo isset($regions_id) ? $regions_id : '' ?>">
- <input type="hidden" name="stations_id" id="stations_id" value="<?php echo isset($stations_id) ? $stations_id : '' ?>">
- <input type="hidden" name="prisoners_no" id="sti_prisoner_id" value="<?php echo isset($prisoners_no) ? $prisoners_no : '' ?>">
+        <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
+        <input type="hidden" name="prisoners_no" id="sti_prisoner_id" value="<?php echo isset($prisoners_no) ? $prisoners_no : '' ?>">
 
         <div class="form-group row">
           <label for="visit_date" class="col-md-5 col-form-label">Visit Date</label>
@@ -123,21 +119,25 @@ transform: rotate(360deg);
         <div class="form-group row">
           <label for="sti_screening" class="col-md-5 col-form-label">STI Screening</label>
           <div class="col-md-7">
-            <div class="form-check form-check-inline">
+            <!-- div class="form-check form-check-inline">
               <input class="form-check-input vericaltext" type="radio" name="sti_screening" id="sti_screening_not_pre" <?php if (isset($sti_screening) && $sti_screening=="Not Presumptive") echo "checked";?> value="Not Presumptive" required>
               <label class="form-check-label" for="sti_screening_not_pre">Not Presumptive</label>
             </div>
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="sti_screening" id="sti_screening_pre" <?php if (isset($sti_screening) && $sti_screening=="Presumptive") echo "checked";?> value="Presumptive" required>
               <label class="form-check-label" for="sti_screening_pre">Presumptive</label>
+            </div -->
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="sti_screening" id="sti_screening_pre" value="Done" required>
+              <label class="form-check-label" for="sti_screening_pre">Done</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="sti_screening" id="sti_screening_nd" <?php if (isset($sti_screening) && $sti_screening=="Not Done") echo "checked";?> value="Not Done" required>
+              <input class="form-check-input" type="radio" name="sti_screening" id="sti_screening_nd" value="Not Done" required>
               <label class="form-check-label" for="sti_screening_nd">Not Done</label>
             </div>
           </div>
         </div>
-        <div class="form-group row">
+        <!-- div class="form-group row">
           <label for="type_of_test" class="col-md-5 col-form-label">
             Type of test
             <button class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#addSTITestType" style="margin-left: 2px; font-size:8px;">
@@ -148,7 +148,7 @@ transform: rotate(360deg);
             <select class="form-control" name="type_of_test" id="sti_type_of_test" required>
             </select>
           </div>
-        </div>
+        </div -->
         <div class="form-group row">
           <label for="sti_test" class="col-md-5 col-form-label">STI Test Testing</label>
           <div class="col-md-7">
@@ -169,14 +169,13 @@ transform: rotate(360deg);
         <div class="form-group row">
           <label for="appoitment_date" class="col-md-5 col-form-label">Appointment date</label>
           <div class="col-md-7">
-          <input type="date" name="app_date" id="appoitment_date" value="<?php echo isset($app_date) ? date("Y-m-d",strtotime($visit_date)) : '' ?>" class="form-control" required>
+          <input type="date" name="app_date" id="appoitment_date" value="" class="form-control" required>
           </div>
         </div>
         <div class="form-group row">
           <label for="comment" class="col-md-5 col-form-label">Comment</label>
           <div class="col-md-7">
-            <textarea name="comment" class="form-control" id="comment" row="3" required>
-              <?php echo isset($comment) ? $comment : '' ?>
+            <textarea name="comment" class="form-control" id="comment" row="3">
             </textarea>
           </div>
         </div>
@@ -190,10 +189,9 @@ transform: rotate(360deg);
 <script>
 $(function () {
     $("input[name='sti_screening']").click(function () {
-      if ($("#sti_screening_nd").is(":checked")) {
-        console.log("Hello");
+      if ($("#sti_screening_nd, #sti_screening_not_pre").is(":checked")) {
         $("#sti_test_neg, #sti_test_pos, #sti_test_unk, #sti_type_of_test").attr("disabled", "disabled");
-      }else if ($("#sti_screening_pre, #sti_screening_not_pre").is(":checked")){
+      }else if ($("#sti_screening_pre").is(":checked")){
         $("#sti_test_neg, #sti_test_pos, #sti_test_unk, #sti_type_of_test").removeAttr("disabled");
       }
     });
