@@ -8,7 +8,7 @@
       </li>
     <?php endif; ?>
       <li>
-        <a class="nav-link text-white"  href="./" role="button"> <large><b style="color:white;"><?php echo $_SESSION['system']['name'] ?></b></large></a>
+        <a class="nav-link text-white"  href="./index.php?page=home" role="button"> <large><b style="color:white;"><?php echo $_SESSION['system']['name'] ?></b></large></a>
       </li>
     </ul>
 

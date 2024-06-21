@@ -32,7 +32,8 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
 }
 
  ?>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" -->
+<link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <?php 
       $user_id = $_SESSION['login_id']; 
@@ -130,7 +131,7 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
                 <div class="form-group row">
                   <label for="outcome" class="col-md-6 col-form-label"><b>Outcome</b>:</label>
                   <div class="col-md-6">
-                    <select class="form-control select2" name="outcome" id="outcome" required>
+                    <select class="form-control select2" name="outcome" id="outcome" required disabled>
                       <option value="Released">Released</option>
                       <option value="Transfered">Transfered</option>
                       <option value="Died">Died</option>
@@ -141,7 +142,7 @@ elseif ($conn->query("INSERT INTO new_regimen (stations_id, regions_id,regimen) 
                 <div class="form-group row">
                   <label for="outcome" class="col-md-6 col-form-label"><b>Outcome date</b>:</label>
                   <div class="col-md-6">
-                    <input type="date" name="outcome_date" id="outcome_date" class="form-control" value="">
+                    <input type="date" name="outcome_date" id="outcome_date" class="form-control" value="" disabled>
                   </div>
                 </div>
               </form>
@@ -1147,4 +1148,5 @@ $(function() {
 
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script  -->
+<script src="assets/dist/js/bootstrap.bundle.min.js"></script>

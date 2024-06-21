@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-light-secondary elevation-4">
   <div class="dropdown">
-   	<a href="./" class="brand-link">
+   	<a href="./index.php?page=home" class="brand-link">
        <p style="text-align: center;" class="logo-border1">
          <img src="assets/uploads/logo.jpeg" alt="Avatar" class="brand_logo1" style="border-radius: 50%; text-align: center;">
        </p>
@@ -10,7 +10,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column nav-flat" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item dropdown">
-            <a href="./" class="nav-link nav-home">
+            <a href="./index.php?page=home" class="nav-link nav-home">
               <i class="nav-icon fas fa-home" style="color:#3c8dbc;"></i>
               <p>
                 Dashboard
