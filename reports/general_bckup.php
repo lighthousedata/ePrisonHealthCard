@@ -74,7 +74,77 @@ if(isset($_POST["fetch"])) {
 		</div>
 
 		<div class="card-body">
-			<table class="table tabe-hover table-condensed" id="list">
+        <table id="disaggregationTable" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th rowspan="2">INDICATOR</th>
+                    <th colspan="2">10yr-14yr</th>
+                    <th colspan="2">15yr-19yr</th>
+                    <th colspan="2">20yr-24yr</th>
+                    <th colspan="2">25yr-29yr</th>
+                    <th colspan="2">30yr-34yr</th>
+                    <th colspan="2">35yr-39yr</th>
+                    <th colspan="2">40yr-44yr</th>
+                    <th colspan="2">45yr-49yr</th>
+                    <th colspan="2">50+yr</th>
+                    <th rowspan="2">Total</th>
+                </tr>
+                <tr>
+                    <th>M</th><th>F</th>
+                    <th>M</th><th>F</th>
+                    <th>M</th><th>F</th>
+                    <th>M</th><th>F</th>
+                    <th>M</th><th>F</th>
+                    <th>M</th><th>F</th>
+                    <th>M</th><th>F</th>
+                    <th>M</th><th>F</th>
+                    <th>M</th><th>F</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total prison population for the reporting period (quarter)</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>2346</td>
+                </tr>
+                <tr>
+                    <td>Number Previously HIV+</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>415</td>
+                </tr>
+                <tr>
+                    <td>Number previously HIV+ on ART</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Number previously HIV+ not on ART</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>2346</td>
+                </tr>
+                <tr>
+                    <td>Number eligible for HTS (a-b)</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>2346</td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+
+
+
+
+			<!-- <table class="table tabe-hover table-condensed" id="list">
 				<h5 style="text-align:center; color: #CD853F;">HTS CASCADE REPORT</h5>
 
 						<thead>
@@ -400,7 +470,7 @@ if(isset($_POST["fetch"])) {
                  $eligible_for_test_50f = $conn->query("SELECT stations.name AS stations, prisoners.gender FROM stations JOIN hiv_test ON stations.id = hiv_test.stations_id JOIN prisoners ON prisoners.prisoners_no = hiv_test.prisoners_no WHERE hiv_test.eligible_for_test = 'Yes' AND hiv_test.stations_id = $stations_id AND  date(hiv_test.created_at) BETWEEN '$date_from' AND '$date_to' AND prisoners.gender = 'Female' AND DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(),prisoners.dob)), '%Y')+0 BETWEEN 50 AND 200")->num_rows;
 
                  $eligible_for_test_sum = $eligible_for_test_10m + $eligible_for_test_10f + $eligible_for_test_15m + $eligible_for_test_15f + $eligible_for_test_20m + $eligible_for_test_20f + $eligible_for_test_25m + $eligible_for_test_25f + $eligible_for_test_30m + $eligible_for_test_30f + $eligible_for_test_35m + $eligible_for_test_35f + $eligible_for_test_40m + $eligible_for_test_40f + $eligible_for_test_45m + $eligible_for_test_45f + $eligible_for_test_50m + $eligible_for_test_50f;
-
+ -->
 
 
                  //NUMBER TESTED FOR HIV
@@ -4074,6 +4144,16 @@ $number_started_tb_treatment_10m = $conn->query("SELECT regions.name AS regions,
 </style>
 
 <script>
+    
+$(document).ready(function() {
+    $('#disaggregationTable').DataTable({
+        scrollX: true,
+        paging: false,
+        searching: false,
+        ordering: false
+    });
+});
+
   $(document).ready(function(){
     $('#covid19_cascade').dataTable({
         dom: 'QlBfrtip',

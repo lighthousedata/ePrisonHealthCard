@@ -35,25 +35,31 @@
             </a>
             <ul class="nav nav-treeview" id="mouseover8">
                <li class="nav-item" id="side">
-                <a href="./index.php?page=reports" class="nav-link nav-reports tree-item" data-toggle="toggle" data-placement="top" title="REPORTS IN TABLES">
+                <a href="./index.php?page=reports/general" class="nav-link nav-reports tree-item" data-toggle="toggle" data-placement="top" title="REPORTS IN TABLES">
                   <i class="fas fa-table nav-icon" style="color:#3c8dbc; font-size:10px;"></i>
                   <p style="color: black; font-size:10px;">Reports</p>
                 </a>
               </li>
               <li class="nav-item" id="side">
-                <a href="./index.php?page=STIs_report" class="nav-link nav-STIs_report tree-item" data-toggle="toggle" data-placement="top" title="STIs REPORT WITH NAMES">
+                <a href="./index.php?page=reports/registrations" class="nav-link nav-registrations tree-item" data-toggle="toggle" data-placement="top" title="Registrations">
+                <i class="fas fa-book nav-icon" style="color:#3c8dbc; font-size:10px;"></i>
+                  <p style="color: black; font-size:10px;">Registrations</p>
+                </a>
+              </li>
+              <li class="nav-item" id="side">
+                <a href="./index.php?page=reports/sti" class="nav-link nav-STIs_report tree-item" data-toggle="toggle" data-placement="top" title="STIs REPORT WITH NAMES">
                   <i class="fas fa-table nav-icon" style="color:#3c8dbc; font-size:10px;"></i>
                   <p style="color: black; font-size:10px;">STIs With Names</p>
                 </a>
               </li>
               <li class="nav-item" id="side">
-                <a href="./index.php?page=eligible_for_HIV_test" class="nav-link nav-eligible_for_HIV_test tree-item" data-toggle="toggle" data-placement="top" title="ELIGIBLE FOR HIV TEST REPORT">
+                <a href="./index.php?page=reports/hiv_test_eligible" class="nav-link nav-eligible_for_HIV_test tree-item" data-toggle="toggle" data-placement="top" title="ELIGIBLE FOR HIV TEST REPORT">
                   <i class="fas fa-table nav-icon" style="color:#3c8dbc; font-size:10px;"></i>
                   <p style="color: black; font-size:10px;">Eligilble For HIV Test</p>
                 </a>
               </li>
               <li class="nav-item" id="side">
-                <a href="./index.php?page=death_and_causes_report" class="nav-link nav-death_and_causes_report tree-item" data-toggle="toggle" data-placement="top" title="DEATH AND CAUSES REPORT">
+                <a href="./index.php?page=reports/death_and_causes_report" class="nav-link nav-death_and_causes_report tree-item" data-toggle="toggle" data-placement="top" title="DEATH AND CAUSES REPORT">
                   <i class="fas fa-table nav-icon" style="color:#3c8dbc; font-size:10px;"></i>
                   <p style="color: black; font-size:11px;">Death and Causes</p>
                 </a>

@@ -439,5 +439,16 @@ if($action == 'update_outcome'){
 		echo $results;
 }
 
+if($action == 'registrations'){
+	$results = $crud->fetch_registrations();
+	if($results)
+		echo $results;
+}
+
+if($action == 'hts_cascade'){
+	$results = $crud->hts_cascade();
+	if($results)
+		echo $results;
+}
 ob_end_flush();
 ?>

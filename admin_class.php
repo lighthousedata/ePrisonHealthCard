@@ -1660,5 +1660,218 @@ function update_outcome(){
 	}
 }
 
+function fetch_registrations(){
+	extract($_POST);
+	$results = "";
+	$patients = array();
+	$statement = "SELECT p.*, concat(p.fname, ' ', p.lname) AS pname FROM prisoners p WHERE 1=1";
+	
+	if (!empty($start_date)) {
+		$statement .= " AND entry_date >= '" . $start_date . "'";
+	}
+	if (!empty($end_date)) {
+		$statement .= " AND entry_date <= '" . $end_date . "'";
+	}
+	// TO DO
+	if (!empty($dob)) {
+		$statement .= " AND dob = '" . $dob . "'";
+	}
+
+	$results = $this->db->query($statement);
+
+	if ($results->num_rows > 0) {
+		// Output data of each row
+		while($row = $results->fetch_assoc()) {
+			$patients[] = $row;
+		}
+		return json_encode($patients);
+	} else {
+		return [];
+	}
+}
+
+function hts_cascade(){
+	extract($_POST);
+	$data = array();
+
+	if (!empty($start_date) && !empty($end_date)) {
+		// First SQL statement
+		$population = "SELECT CONCAT('pop_', LOWER(gender), '_', REPLACE(age_group, '-', '_')) AS label, SUM(count) AS value 
+					  FROM (
+						  SELECT gender,
+							  CASE 
+								  WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 10 AND 14 THEN '10-14'
+								  WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 15 AND 19 THEN '15-19'
+								  WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 20 AND 24 THEN '20-24'
+								  WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 25 AND 29 THEN '25-29'
+								  WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 30 AND 34 THEN '30-34'
+								  WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 35 AND 39 THEN '35-39'
+								  WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 40 AND 44 THEN '40-44'
+								  WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 45 AND 49 THEN '45-49'
+								  WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) > 49 THEN '50+'
+							  END AS age_group,
+							  COUNT(*) AS count
+						  FROM prisoners
+						  WHERE entry_date BETWEEN '". $start_date ."' AND '". $end_date ."'
+						  GROUP BY gender, age_group
+					  ) AS data
+					  GROUP BY gender, age_group
+					  ORDER BY gender, age_group;";
+
+		// Second SQL statement (modify according to your requirement)
+		$prev_pos = "SELECT CONCAT('prev_pos_', LOWER(gender), '_', REPLACE(age_group, '-', '_')) AS label, SUM(count) AS value 
+		FROM (
+			SELECT gender,
+				CASE 
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 10 AND 14 THEN '10-14'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 15 AND 19 THEN '15-19'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 20 AND 24 THEN '20-24'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 25 AND 29 THEN '25-29'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 30 AND 34 THEN '30-34'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 35 AND 39 THEN '35-39'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 40 AND 44 THEN '40-44'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 45 AND 34 THEN '34-49'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) > 49 THEN '50+'
+				END AS age_group,
+				COUNT(distinct prisoners.id) AS count
+			FROM id2021_primis_2022.prisoners INNER JOIN id2021_primis_2022.art_history_at_entry art ON art.prisoners_no = prisoners.id
+			WHERE entry_date BETWEEN '". $start_date ."' AND '". $end_date ."' AND HIV_status = 'Prev Positive'
+			GROUP BY gender, age_group
+		) AS data
+		GROUP BY gender, age_group
+		ORDER BY gender, age_group;";
+
+		$prev_pos_on_art = "SELECT CONCAT('on_art_', LOWER(gender), '_', REPLACE(age_group, '-', '_')) AS label, SUM(count) AS value 
+		FROM (
+			SELECT gender,
+				CASE 
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 10 AND 14 THEN '10-14'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 15 AND 19 THEN '15-19'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 20 AND 24 THEN '20-24'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 25 AND 29 THEN '25-29'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 30 AND 34 THEN '30-34'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 35 AND 39 THEN '35-39'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 40 AND 44 THEN '40-44'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 45 AND 34 THEN '34-49'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) > 49 THEN '50+'
+				END AS age_group,
+				COUNT(distinct prisoners.id) AS count
+			FROM id2021_primis_2022.prisoners INNER JOIN id2021_primis_2022.art_history_at_entry art ON art.prisoners_no = prisoners.id
+			WHERE entry_date BETWEEN '". $start_date ."' AND '". $end_date ."' AND HIV_status = 'Prev Positive' AND on_ART = 'Yes'
+			GROUP BY gender, age_group
+		) AS data
+		GROUP BY gender, age_group
+		ORDER BY gender, age_group;";
+
+		$prev_pos_not_on_art = "SELECT CONCAT('not_on_art_', LOWER(gender), '_', REPLACE(age_group, '-', '_')) AS label, SUM(count) AS value 
+		FROM (
+			SELECT gender,
+				CASE 
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 10 AND 14 THEN '10-14'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 15 AND 19 THEN '15-19'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 20 AND 24 THEN '20-24'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 25 AND 29 THEN '25-29'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 30 AND 34 THEN '30-34'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 35 AND 39 THEN '35-39'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 40 AND 44 THEN '40-44'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 45 AND 34 THEN '34-49'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) > 49 THEN '50+'
+				END AS age_group,
+				COUNT(distinct prisoners.id) AS count
+			FROM id2021_primis_2022.prisoners INNER JOIN id2021_primis_2022.art_history_at_entry art ON art.prisoners_no = prisoners.id
+			WHERE entry_date BETWEEN '". $start_date ."' AND '". $end_date ."' AND HIV_status = 'Prev Positive' AND on_ART = 'No'
+			GROUP BY gender, age_group
+		) AS data
+		GROUP BY gender, age_group
+		ORDER BY gender, age_group;";
+
+		$eligible = "SELECT CONCAT('eligible_', LOWER(gender), '_', REPLACE(age_group, '-', '_')) AS label, SUM(count) AS value 
+		FROM (
+			SELECT gender,
+				CASE 
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 10 AND 14 THEN '10-14'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 15 AND 19 THEN '15-19'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 20 AND 24 THEN '20-24'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 25 AND 29 THEN '25-29'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 30 AND 34 THEN '30-34'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 35 AND 39 THEN '35-39'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 40 AND 44 THEN '40-44'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 45 AND 34 THEN '34-49'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) > 49 THEN '50+'
+				END AS age_group,
+				COUNT(distinct prisoners.id) AS count
+			FROM id2021_primis_2022.prisoners INNER JOIN id2021_primis_2022.art_history_at_entry art ON art.prisoners_no = prisoners.id
+			WHERE entry_date BETWEEN '". $start_date ."' AND '". $end_date ."' AND HIV_status <> 'Prev Positive'
+			GROUP BY gender, age_group
+		) AS data
+		GROUP BY gender, age_group
+		ORDER BY gender, age_group;";
+
+		$tested = "SELECT CONCAT('tested_', LOWER(gender), '_', REPLACE(age_group, '-', '_')) AS label, SUM(count) AS value 
+		FROM (
+			SELECT gender,
+				CASE 
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 10 AND 14 THEN '10-14'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 15 AND 19 THEN '15-19'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 20 AND 24 THEN '20-24'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 25 AND 29 THEN '25-29'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 30 AND 34 THEN '30-34'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 35 AND 39 THEN '35-39'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 40 AND 44 THEN '40-44'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 45 AND 34 THEN '34-49'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) > 49 THEN '50+'
+				END AS age_group,
+				COUNT(distinct prisoners.id) AS count
+			FROM id2021_primis_2022.prisoners INNER JOIN id2021_primis_2022.hiv_test h ON h.prisoners_no = prisoners.id
+			WHERE entry_date BETWEEN '". $start_date ."' AND '". $end_date ."' AND (HIV_test is not null OR HIV_test <> 'Not done')
+			GROUP BY gender, age_group
+		) AS data
+		GROUP BY gender, age_group
+		ORDER BY gender, age_group;";
+		
+		$tested_pos = "SELECT CONCAT('tested_pos_', LOWER(gender), '_', REPLACE(age_group, '-', '_')) AS label, SUM(count) AS value 
+		FROM (
+			SELECT gender,
+				CASE 
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 10 AND 14 THEN '10-14'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 15 AND 19 THEN '15-19'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 20 AND 24 THEN '20-24'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 25 AND 29 THEN '25-29'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 30 AND 34 THEN '30-34'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 35 AND 39 THEN '35-39'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 40 AND 44 THEN '40-44'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) BETWEEN 45 AND 34 THEN '34-49'
+					WHEN TIMESTAMPDIFF(YEAR, dob, entry_date) > 49 THEN '50+'
+				END AS age_group,
+				COUNT(distinct prisoners.id) AS count
+			FROM id2021_primis_2022.prisoners INNER JOIN id2021_primis_2022.hiv_test h ON h.prisoners_no = prisoners.id
+			WHERE entry_date BETWEEN '". $start_date ."' AND '". $end_date ."' AND HIV_test = 'Positive'
+			GROUP BY gender, age_group
+		) AS data
+		GROUP BY gender, age_group
+		ORDER BY gender, age_group;";
+
+		// Array of statements to run
+		$statements = [$population, $prev_pos, $prev_pos_on_art, $prev_pos_not_on_art, $eligible, $tested, $tested_pos];
+		
+		// Loop through each statement, execute it, and store the results in $data
+		foreach ($statements as $statement) {
+			$results = $this->db->query($statement);
+
+			if ($results && $results->num_rows > 0) {
+				// Fetch all rows and merge into $data
+				while($row = $results->fetch_assoc()) {
+					$data[] = $row;
+				}
+			}
+		}
+
+		return json_encode($data);
+	} else {
+		return json_encode([]);
+	}
+}
+
+
 
 }
